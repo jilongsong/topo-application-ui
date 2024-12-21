@@ -4,10 +4,15 @@ import { Project } from './project';
 
 export const DEFAULT_VALUE = {
   fill: 'rgba(255,255,255,1)',
+  nodeFill: 'rgba(255,255,255,0)',
+  nodeStroke: 'rgba(255,255,255,1)',
+  nodeFillOpacity: 1,
+  nodeStrokeOpacity: 0,
+  fillWidth: 2,
   fillOpacity: 1,
   stroke: 'rgba(255,255,255,1)',
   strokeWidth: 4,
-  strokeDasharray: 0,
+  strokeDasharray: 15,
   strokeOpacity: 1,
   color: '#fff',
   colorOpacity: 1,
@@ -16,6 +21,11 @@ export const DEFAULT_VALUE = {
 
 export const DEFAULT_STYLE = `
 --fill: ${DEFAULT_VALUE.fill}; 
+--nodeFill: ${DEFAULT_VALUE.nodeFill};
+--nodeStroke: ${DEFAULT_VALUE.nodeStroke};
+--nodeFillOpacity: ${DEFAULT_VALUE.nodeFillOpacity};
+--nodeStrokeOpacity: ${DEFAULT_VALUE.nodeStrokeOpacity};
+--fillWidth: ${DEFAULT_VALUE.fillWidth};
 --fillOpacity: ${DEFAULT_VALUE.fillOpacity}; 
 --stroke: ${DEFAULT_VALUE.stroke}; 
 --strokeWidth: ${DEFAULT_VALUE.strokeWidth}; 
@@ -30,6 +40,11 @@ export class Element {
   public id: Id;
   public name: string;
   public fill?: string;
+  public nodeFill?: string;
+  public nodeStroke?: string;
+  public nodeFillOpacity?: number;
+  public nodeStrokeOpacity?: number;
+  public fillWidth?: number;
   public fillOpacity?: number;
   public stroke?: string;
   public strokeWidth?: number;
@@ -38,6 +53,7 @@ export class Element {
   public color?: string;
   public colorOpacity?: number;
   public fontSize?: number;
+  public animation?: string;
   public zIndex?: number;
   public states: State[];
   public variables?: Variable[];
@@ -46,10 +62,14 @@ export class Element {
 
   constructor(options: MElement, project: Project) {
     this.project = project;
-
     this.id = options.id;
     this.name = options.name;
+    this.nodeFill = options.nodeFill ?? DEFAULT_VALUE.nodeFill;
+    this.nodeStroke = options.nodeStroke ?? DEFAULT_VALUE.nodeStroke;
+    this.nodeFillOpacity = options.nodeFillOpacity ?? DEFAULT_VALUE.nodeFillOpacity;
+    this.nodeStrokeOpacity = options.nodeStrokeOpacity ?? DEFAULT_VALUE.nodeStrokeOpacity;
     this.fill = options.fill ?? DEFAULT_VALUE.fill;
+    this.fillWidth = options.fillWidth ?? DEFAULT_VALUE.fillWidth;
     this.fillOpacity = options.fillOpacity ?? DEFAULT_VALUE.fillOpacity;
     this.stroke = options.stroke ?? DEFAULT_VALUE.stroke;
     this.strokeOpacity = options.strokeOpacity ?? DEFAULT_VALUE.strokeOpacity;
@@ -61,10 +81,16 @@ export class Element {
     this.zIndex = options.zIndex;
     this.states = options.states;
     this.variables = options.variables;
+    this.animation = options.animation;
   }
 
   public update(options: MElement): void {
     this.fill = options.fill;
+    this.nodeFill = options.nodeFill;
+    this.nodeStroke = options.nodeStroke;
+    this.nodeFillOpacity = options.nodeFillOpacity;
+    this.nodeStrokeOpacity = options.nodeStrokeOpacity;
+    this.fillWidth = options.fillWidth;
     this.fillOpacity = options.fillOpacity;
     this.stroke = options.stroke;
     this.strokeOpacity = options.strokeOpacity;
@@ -76,11 +102,17 @@ export class Element {
     this.zIndex = options.zIndex;
     this.states = options.states;
     this.variables = options.variables;
+    this.animation = options.animation;
   }
 
   public getStyle(): string {
     return `
         --fill: ${this.fill}; 
+        --nodeFill: ${this.nodeFill};
+        --nodeStroke: ${this.nodeStroke};
+        --nodeFillOpacity: ${this.nodeFillOpacity};
+        --nodeStrokeOpacity: ${this.nodeStrokeOpacity};
+        --fillWidth: ${this.fillWidth};
         --fillOpacity: ${this.fillOpacity}; 
         --stroke: ${this.stroke}; 
         --strokeWidth: ${this.strokeWidth}; 
@@ -89,6 +121,7 @@ export class Element {
         --color: ${this.color}; 
         --colorOpacity: ${this.colorOpacity}; 
         --fontSize: ${this.fontSize};
+        --animation: ${this.animation}
         `;
   }
 
@@ -97,6 +130,11 @@ export class Element {
       id: this.id,
       name: this.name,
       fill: this.fill,
+      nodeFill: this.nodeFill,
+      nodeStroke: this.nodeStroke,
+      nodeFillOpacity: this.nodeFillOpacity,
+      nodeStrokeOpacity: this.nodeStrokeOpacity,
+      fillWidth: this.fillWidth,
       fillOpacity: this.fillOpacity,
       stroke: this.stroke,
       strokeWidth: this.strokeWidth,
@@ -108,6 +146,7 @@ export class Element {
       zIndex: this.zIndex,
       states: this.states,
       variables: this.variables,
+      animation: this.animation,
     };
   }
 }

@@ -1,15 +1,17 @@
-import { Id, MVertex, MVertexPort, MVertexState, VertexTag } from '@topo/schema';
+import { Id, MVertex, MVertexPort, MVertexState, Tag, VertexTag } from '@topo/schema';
 
-// import { isSVG } from '@topo/utils';
+import { CustomGroup } from '../custom/group';
 import { CustomNode } from '../custom/node';
 import { diffPorts, executeRule, getValidateValues } from '../util';
 
 import { Element } from './element';
+import { Link } from './link';
 import { Project } from './project';
 import { VertexPort } from './vertex-port';
 
 interface VertexOptions {
   config: MVertex;
+  parent?: Vertex;
   project: Project;
 }
 
@@ -24,11 +26,21 @@ export class Vertex extends Element {
   public height: number;
   public angle: number;
   public states: MVertexState[];
+  public isCollapsed?: boolean;
+  public expandWidth?: number;
+  public expandHeight?: number;
 
   public project: Project;
   public readonly node: CustomNode;
   /** 当前状态 */
   public curState?: MVertexState;
+
+  public parent?: Vertex;
+  public children: Vertex[] = [];
+  /** 出度 */
+  public outDegrees: Map<Id, Link[]> = new Map();
+  /** 入度 */
+  public inDegrees: Vertex[] = [];
 
   constructor(options: VertexOptions) {
     super(options.config, options.project);
@@ -45,9 +57,58 @@ export class Vertex extends Element {
     this.angle = angle;
 
     this.project = options.project;
-    this.node = new CustomNode(this);
+    this.parent = options.parent;
+
+    if ([Tag.System, Tag.Station, Tag.Unit].includes(this.tag)) {
+      if (Reflect.has(options.config, 'isCollapsed')) {
+        this.isCollapsed = options.config.isCollapsed;
+      } else {
+        this.isCollapsed = false;
+      }
+      if (Reflect.has(options.config, 'expandWidth')) {
+        this.expandWidth = options.config.expandWidth;
+      } else {
+        this.expandWidth = 400;
+      }
+
+      if (Reflect.has(options.config, 'expandHeight')) {
+        this.expandHeight = options.config.expandHeight;
+      } else {
+        this.expandHeight = 400;
+      }
+      this.node = new CustomGroup(this);
+      this.node.setAttrByPath(['container', 'style'], this.getStyle());
+    } else {
+      this.node = new CustomNode(this);
+      this.node.setAttrByPath(['container', 'style'], this.getStyle());
+    }
+
     this.node.setLabel(this.name);
-    this.node.setAttrByPath(['container', 'style'], this.getStyle());
+    this.node.on('change:collapsed', ({ cell }: { cell: CustomNode }) => {
+      if (cell instanceof CustomGroup) {
+        const collapsed = cell.isCollapsed();
+        this.isCollapsed = collapsed;
+        const collapse = (parent: CustomGroup) => {
+          const cells = parent.getChildren();
+          if (!cells) {
+            return;
+          }
+          cells.forEach((cell) => {
+            if (collapsed) {
+              cell.hide();
+            } else {
+              cell.show();
+            }
+            if (cell instanceof CustomGroup) {
+              if (!cell.isCollapsed()) {
+                collapse(cell);
+              }
+            }
+          });
+        };
+        collapse(cell);
+      }
+    });
 
     this.node.on('change:angle', ({ cell }: { cell: CustomNode }) => {
       this.angle = cell.getAngle();
@@ -65,7 +126,62 @@ export class Vertex extends Element {
       this.height = height;
     });
 
+    this.node.on('change:parent', ({ current }: { cell: CustomNode; current?: string }) => {
+      if (this.parent) {
+        this.parent.removeChild(this);
+      } else {
+        this.project.vertexes.splice(
+          this.project.vertexes.findIndex((item) => item === this),
+          1
+        );
+      }
+      if (!current) {
+        this.parent = undefined;
+        this.project.vertexes.push(this);
+      } else {
+        const parent = this.project.elementMap.get(current);
+        if (parent && parent instanceof Vertex) {
+          this.parent = parent;
+          const parentZIndex = parent.node.getZIndex() ?? 1;
+          this.node.setZIndex(parentZIndex + 1);
+          this.parent.addChild(this);
+        }
+      }
+    });
     this.defaultImg();
+
+    // children?.map((child) => {
+    //   this.project.addVertex(child);
+    //   // this.addChild(child);
+    // });
+  }
+
+  public addChild(config: MVertex | Vertex): void {
+    let vertex: Vertex;
+    if (config instanceof Vertex) {
+      vertex = config;
+    } else {
+      vertex = new Vertex({
+        config: config,
+        project: this.project,
+        parent: this,
+      });
+    }
+    this.children.push(vertex);
+  }
+
+  public removeChild(config: MVertex | Vertex | Id): void {
+    let vertexId: Id;
+    if (typeof config === 'string') {
+      vertexId = config;
+    } else {
+      vertexId = config.id;
+    }
+    const index = this.children.findIndex(({ id }) => id === vertexId);
+    if (index === -1) {
+      return;
+    }
+    this.children.splice(index, 1);
   }
 
   public hasPort(id: Id): boolean {
@@ -123,8 +239,8 @@ export class Vertex extends Element {
     port.energyType = portConfig.energyType;
     port.descr = portConfig.descr;
     port.position = portConfig.position;
-    this.node.setPortProp(port.id, 'args/refX', port.position.refX);
-    this.node.setPortProp(port.id, 'args/refY', port.position.refY);
+    this.node.setPortProp(port.id, 'args/refX', port.position?.refX);
+    this.node.setPortProp(port.id, 'args/refY', port.position?.refY);
     this.defaultImg();
   }
 
@@ -173,7 +289,9 @@ export class Vertex extends Element {
     if (defaultState && defaultState.src) {
       this.curState = defaultState;
       this.setNodeContent(
-        defaultState.src.startsWith('/node') ? defaultState.src : import.meta.env.VITE_BASE_API_URL + defaultState.src
+        defaultState.src.startsWith('/node')
+          ? defaultState.src
+          : (import.meta.env.VITE_BASE_API_URL ?? '') + defaultState.src
       );
     }
   }
@@ -219,6 +337,8 @@ export class Vertex extends Element {
       angle: this.angle,
       states: this.states,
       ports: this.ports.map((item) => item.toJSON()),
+      parentId: this.parent?.id,
+      children: this.children.map((item) => item.toJSON()),
     };
   }
 }

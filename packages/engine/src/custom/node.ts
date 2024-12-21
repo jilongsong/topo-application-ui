@@ -1,11 +1,12 @@
 import { Node } from '@antv/x6';
 
+import { PortEnergyType } from '@topo/schema';
 import { isSVG } from '@topo/utils';
 
+import { PortEnergyTypeStyle } from '../constants';
 import { Vertex } from '../core';
 import { NodeMetadata } from '../types';
 import { vertexMetadata } from '../util';
-
 export class CustomNode extends Node {
   public vertex: Vertex;
 
@@ -18,6 +19,7 @@ export class CustomNode extends Node {
         this.addPort({
           id: port.id,
           group: 'relative',
+          attrs: this.getNodePortAttrs(port.energyType)!,
           args: {
             refX: port.position?.refX || 0,
             refY: port.position?.refY || 0,
@@ -25,6 +27,15 @@ export class CustomNode extends Node {
         });
       });
     }
+  }
+
+  private getNodePortAttrs(energyType: PortEnergyType): Node['attrs'] {
+    return {
+      circle: PortEnergyTypeStyle[energyType] || {
+        fill: '#fff',
+        stroke: 'red',
+      },
+    };
   }
 
   public setContent(content: string): this {
@@ -76,10 +87,10 @@ CustomNode.config({
   ],
   attrs: {
     body: {
-      stroke: 'var(--stroke)',
-      strokeOpacity: 'var(--strokeOpacity)',
-      fill: 'var(--fill)',
-      fillOpacity: 'var(--fillOpacity)',
+      stroke: 'var(--nodeStroke)',
+      strokeOpacity: 'var(--nodeStrokeOpacity)',
+      fill: 'var(--nodeFill)',
+      fillOpacity: 'var(--nodeFillOpacity)',
       refWidth: 1,
       refHeight: 0.9,
     },

@@ -8,6 +8,7 @@ import { MLink, MVertex, Position } from '@topo/schema';
 import { BaseService } from '@topo/utils';
 
 import { App } from '../app';
+import { PortEnergyTypeStyle } from '../constants';
 import { Vertex } from '../core';
 import { CustomEdge, CustomNode } from '../custom';
 import { Cmd, ContextEventArgs, EditorEventArgs } from '../types';
@@ -218,6 +219,12 @@ export class EditorService extends BaseService<EditorEventArgs> {
     this.emit('vertex:changing', { vertex });
   }
 
+  private compareEnergyAttributes(sourceVertex: Vertex, targetVertex: Vertex) {
+    const sourceEnergy = sourceVertex;
+    const targetEnergy = targetVertex;
+    return sourceEnergy.type === targetEnergy.type;
+  }
+
   private onNodeMousedown({ node: oldNode }: { node: CustomNode }) {
     const oldVertex = oldNode.vertex.toJSON();
     const oldPosture = this.context.rendererService.getNodePosture(oldNode);
@@ -333,10 +340,6 @@ export class EditorService extends BaseService<EditorEventArgs> {
           stroke: 'none',
         },
       },
-      arrow: {
-        fill: '#fff',
-        stroke: '#fff',
-      },
     });
   }
 
@@ -357,14 +360,26 @@ export class EditorService extends BaseService<EditorEventArgs> {
     if (!sourceNode || !targetNode || !sourcePort || !targetPort) {
       return;
     }
-
+    const sourceZIndex = edge.getSourceNode()?.getZIndex() ?? 1;
+    const targetZIndex = edge.getTargetNode()?.getZIndex() ?? 1;
+    const zIndex = Math.max(sourceZIndex, targetZIndex) + 1;
     const sourceVertex = this.context.project.getVertex(sourceNode.id);
     const targetVertex = this.context.project.getVertex(targetNode.id);
     if (!sourceVertex || !targetVertex) {
       return;
     }
+
+    const sourceVertexPort = sourceVertex.getPort(sourcePort)!;
+    const targetVertexPort = targetVertex.getPort(targetPort)!;
+    if (sourceVertexPort?.energyType !== targetVertexPort?.energyType) {
+      return;
+    }
+    const { fill, stroke } = PortEnergyTypeStyle[sourceVertexPort.energyType];
     const link: MLink = {
       id: edge.id,
+      fill,
+      stroke,
+      zIndex,
       name: `${sourceVertex.id}::${sourcePort}=>${targetVertex.id}::${targetPort}`,
       source: {
         vertex: sourceVertex.id,
@@ -398,7 +413,9 @@ export class EditorService extends BaseService<EditorEventArgs> {
   }
 
   private onEdgeMouseleave({ edge }: { edge: CustomEdge }) {
-    edge.prop('zIndex', 0);
+    if (!edge.link) {
+      edge.remove();
+    }
     edge.setAttrs({
       line: {
         stroke: 'var(--stroke)',
@@ -406,10 +423,6 @@ export class EditorService extends BaseService<EditorEventArgs> {
           fill: 'none',
           stroke: 'none',
         },
-      },
-      arrow: {
-        fill: 'var(--stroke)',
-        stroke: 'var(--stroke)',
       },
     });
   }

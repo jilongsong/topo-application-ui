@@ -77,20 +77,33 @@ export class Project extends EventBus<ProjectEventArgs> {
     }
   }
 
-  public addVertex(config: MVertex): Vertex {
+  public addVertex(config: MVertex, parent?: Vertex): Vertex {
     if (this.elementMap.has(config.id)) {
       throw new VertexAlreadyExistError(config.id);
     }
-    const vertex = new Vertex({
-      config,
-      project: this,
-    });
-    this.elementMap.set(vertex.id, vertex);
-    this.vertexes.push(vertex);
-
-    this.emit('project:vertex:added', {
-      vertex,
-    });
+    const handleAddVertex = (config: MVertex, parent?: Vertex): Vertex => {
+      const vertex = new Vertex({
+        config,
+        parent: parent,
+        project: this,
+      });
+      this.elementMap.set(vertex.id, vertex);
+      if (!parent) {
+        this.vertexes.push(vertex);
+      } else {
+        parent.addChild(vertex);
+      }
+      this.emit('project:vertex:added', {
+        vertex,
+      });
+      if (config.children) {
+        config.children.forEach((child) => {
+          handleAddVertex(child, vertex);
+        });
+      }
+      return vertex;
+    };
+    const vertex = handleAddVertex(config, parent);
     return vertex;
   }
 

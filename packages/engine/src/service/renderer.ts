@@ -1,4 +1,5 @@
 import { Cell, Edge, Graph, Node, Point, Rectangle, Size } from '@antv/x6';
+import { Export } from '@antv/x6-plugin-export';
 
 import { Posture } from '@topo/schema';
 import { BaseService } from '@topo/utils';
@@ -28,7 +29,6 @@ Graph.registerPortLayout(
 
 export class RendererService extends BaseService<RendererEventArgs> {
   private context: App;
-
   public options?: Graph.Options;
   public graph?: Graph;
 
@@ -191,7 +191,7 @@ export class RendererService extends BaseService<RendererEventArgs> {
     }
     const sourceZIndex = edge.getSourceNode()?.getZIndex() ?? 1;
     const targetZIndex = edge.getTargetNode()?.getZIndex() ?? 1;
-    edge.setZIndex(Math.min(sourceZIndex, targetZIndex) - 1);
+    edge.setZIndex(Math.max(sourceZIndex, targetZIndex) + 1);
     return edge;
   }
 
@@ -250,6 +250,10 @@ export class RendererService extends BaseService<RendererEventArgs> {
       padding: Math.max(padding, 20),
       backgroundColor,
     });
+  }
+
+  public toPng(callback: (data: any) => void, options?: Export.ToImageOptions) {
+    this.graph?.toPNG(callback, options);
   }
 
   public destroy(): void {
