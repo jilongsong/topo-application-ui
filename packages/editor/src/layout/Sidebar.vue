@@ -33,8 +33,7 @@ import { computed, ref } from 'vue';
 
 import { ChevronsDownUpIcon } from '@topo/icon';
 import { MVertex } from '@topo/schema';
-import { Input } from '@topo/ui';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@topo/ui';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger, Input } from '@topo/ui';
 
 import { ElementModelsKey } from '../constants/inject-keys';
 import { ElementModel } from '../type';

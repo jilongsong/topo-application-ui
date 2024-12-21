@@ -288,11 +288,10 @@ export class Vertex extends Element {
     }
     if (defaultState && defaultState.src) {
       this.curState = defaultState;
-      this.setNodeContent(
-        defaultState.src.startsWith('/node')
-          ? defaultState.src
-          : (import.meta.env.VITE_BASE_API_URL ?? '') + defaultState.src
-      );
+      this.setNodeContent(defaultState.src);
+    } else {
+      //画一个矩形
+      this.node.setContent(`<rect width="${this.width}" height="${this.height}" fill="#f5f5f5" />`);
     }
   }
 
