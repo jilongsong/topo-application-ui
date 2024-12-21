@@ -1,0 +1,87 @@
+::-webkit-scrollbar {
+    width: 5px; /* 纵向滚动条*/
+    height: 5px; /* 横向滚动条 */
+    background-color: #fff;
+  }
+  
+  /*定义滑块 内阴影*/
+  ::-webkit-scrollbar-thumb {
+    background-color: #e4e4e4;
+    border-radius: 12px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #dadada;
+  }
+  
+  .topo-editor-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .topo-editor-stage-container {
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      position: relative;
+      transition: transform 0.3s;
+      box-sizing: content-box;
+      box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    
+      &::-webkit-scrollbar {
+        width: 0 !important;
+      }
+    }
+    
+    #ruler-container {
+      width: calc(100% + 40px);
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      height: 40px;
+      z-index: 100000;
+    
+      .moveable-line {
+        display: none;
+      }
+    
+      .moveable-control.moveable-origin {
+        display: none;
+      }
+    }
+    
+    #ruler-container::after {
+      content: '';
+      position: absolute;
+      left: 100%;
+      top: 0;
+      width: calc(2000px - 100%);
+      height: 100%;
+      background-color: white;
+    }
+    
+    #horizontal {
+      width: 2000px;
+      max-width: fit-content;
+    }
+    
+    #vertical {
+      position: absolute;
+      height: 1000px;
+      top: 0;
+      left: 0;
+    }
+    
+    .moveable-control {
+      width: 8px !important;
+      height: 8px !important;
+      margin-top: -4px !important;
+      margin-left: -4px !important;
+      border: none !important;
+    }
+    
+  

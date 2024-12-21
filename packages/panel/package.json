@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "name": "@topo/panel",
+  "sideEffects": [
+    "dist/*"
+  ],
+  "main": "dist/topo-panel.umd.js",
+  "module": "dist/topo-panel.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/topo-panel.mjs",
+      "require": "./dist/topo-panel.umd.js"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": "npm run build:type && vite build",
+    "build:type": "npm run clear:type && vue-tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
+    "clear:type": "rimraf ./types"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "@topo/icon": "workspace:^",
+    "@topo/ui": "workspace:^",
+    "@internationalized/date": "^3.5.6",
+    "@vee-validate/zod": "^4.12.6",
+    "@vueuse/core": "^10.9.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "dayjs": "^1.11.4",
+    "lodash-es": "^4.17.21",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7",
+    "v-calendar": "^3.1.2",
+    "vee-validate": "^4.12.6",
+    "vue": "^3.5.12",
+    "vue-color-kit": "^1.0.6",
+    "zod": "^3.22.4"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.4",
+    "@types/node": "^18.0.0",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "@vue/compiler-sfc": "^3.2.37",
+    "@vue/test-utils": "^2.0.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "rimraf": "^3.0.2",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.10",
+    "vue-tsc": "^2.1.8"
+  }
+}

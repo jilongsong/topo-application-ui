@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "name": "@topo/icon",
+  "sideEffects": [
+    "dist/*"
+  ],
+  "main": "dist/topo-icon.umd.js",
+  "module": "dist/topo-icon.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/topo-icon.mjs",
+      "require": "./dist/topo-icon.umd.js"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": "npm run build:type && vite build",
+    "build:type": "npm run clear:type && vue-tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
+    "clear:type": "rimraf ./types"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "clsx": "^2.1.0",
+    "lucide-vue-next": "^0.363.0",
+    "vue": "^3.5.12"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "@vue/compiler-sfc": "^3.2.37",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.10",
+    "vue-tsc": "^2.1.8"
+  }
+}

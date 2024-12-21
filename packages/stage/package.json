@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "name": "@topo/stage",
+  "sideEffects": [
+    "dist/*"
+  ],
+  "main": "dist/topo-stage.umd.js",
+  "module": "dist/topo-stage.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/topo-stage.mjs",
+      "require": "./dist/topo-stage.umd.js"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": "npm run build:type && vite build",
+    "build:type": "npm run clear:type && tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
+    "clear:type": "rimraf ./types"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "@topo/core": "workspace:^",
+    "@topo/schema": "workspace:^",
+    "@topo/utils": "workspace:^",
+    "@scena/guides": "^0.28.0",
+    "events": "^3.3.0",
+    "keycon": "^1.1.2",
+    "lodash-es": "^4.17.21",
+    "moveable": "^0.30.0",
+    "moveable-helper": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/events": "^3.0.0",
+    "@types/lodash-es": "^4.17.4",
+    "@types/node": "^18.0.0",
+    "rimraf": "^3.0.2",
+    "sass": "^1.35.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.0.4"
+  }
+}

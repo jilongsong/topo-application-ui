@@ -1,0 +1,18 @@
+{
+  "id": "516",
+  "name": "基础项目",
+  "type": "app",
+  "tenantId": "PJG13001_S0000000_ST00000000_U00000000_EQ000000000000_MP0000000",
+  "items": [
+    {
+      "id": "topo_page_301a2652",
+      "type": "page",
+      "layout": "absolute",
+      "style": {
+        "position": "relative"
+      },
+      "name": "page_3",
+      "items": []
+    }
+  ]
+}

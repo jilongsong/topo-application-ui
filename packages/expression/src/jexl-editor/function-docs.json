@@ -1,0 +1,2928 @@
+{
+  "chunk": {
+    "name": "chunk",
+    "description": "Split an array into chunks of a given size.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be chunked."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The chunked array."
+    },
+    "example": "[1, 2, 3, 4, 5] | chunk(2);\n=> [[1, 2], [3, 4], [5]]"
+  },
+  "concat": {
+    "name": "concat",
+    "description": "Create a new array concatenating array with any additional arrays and/or values.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The initial array to be concatenated."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": "- The values or arrays to be concatenated to the initial array."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The concatenated array."
+    },
+    "example": "[1] | concat(2, [3], [[4]]);\n=> [1, 2, 3, [4]]"
+  },
+  "difference": {
+    "name": "difference",
+    "description": "Returns the elements of the first array that are not present in any of the other arrays.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to compare against the others."
+      },
+      {
+        "name": "values",
+        "type": "any[][]",
+        "description": "- Arrays to exclude elements from the first array."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The filtered array containing elements not present in the other arrays."
+    },
+    "example": "[2, 1] | difference([2, 3]);\n=> [1]\n\n['a', 'b', 'c'] | difference(['b'], ['d']);\n=> ['a', 'c']"
+  },
+  "differenceBy": {
+    "name": "differenceBy",
+    "description": "Returns the elements of the first array that are not present in any of the other arrays,\ncompared by a specified property.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to compare against the others."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": "- Arrays to exclude elements from the first array."
+      },
+      {
+        "name": "iteratee",
+        "type": "string | Function",
+        "description": "- The function or property name to compare elements by."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The filtered array containing elements not present in the other arrays."
+    },
+    "example": "[{ 'x': 2 }, { 'x': 1 }] | differenceBy([{ 'x': 1 }], 'x');\n=> [{ 'x': 2 }]"
+  },
+  "drop": {
+    "name": "drop",
+    "description": "Removes the specified number of elements from the beginning of an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "n",
+        "type": "number",
+        "description": "- The number of elements to remove from the start."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array with elements removed from the beginning."
+    },
+    "example": "[1, 2, 3] | drop(2);\n=> [3]\n\n['a', 'b', 'c', 'd'] | drop(1);\n=> ['b', 'c', 'd']"
+  },
+  "dropRight": {
+    "name": "dropRight",
+    "description": "Removes the specified number of elements from the end of an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "n",
+        "type": "number",
+        "description": "- The number of elements to remove from the end."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array with elements removed from the end."
+    },
+    "example": "[1, 2, 3] | dropRight(2);\n=> [1]\n\n['a', 'b', 'c', 'd'] | dropRight(1);\n=> ['a', 'b', 'c']"
+  },
+  "dropRightWhile": {
+    "name": "dropRightWhile",
+    "description": "Removes elements from the end of an array that satisfy the given condition.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "predicate",
+        "type": "string | object | Function | any[]",
+        "description": "- The condition to test the elements against.\n- Can be an object to match the properties,\n- A function to test each element,\n- A string to check if the property exists,\n- Or an array for matching multiple conditions."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array with elements removed from the end that meet the condition."
+    },
+    "example": "[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | dropRightWhile({ 'user': 'pebbles', 'active': false });\n=> [{ 'user': 'barney', 'active': true }, { 'user': 'fred', 'active': false }]\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | dropRightWhile(['active', false]);\n=> [{ 'user': 'barney', 'active': true }]\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | dropRightWhile('active');\n=> [{ 'user': 'barney', 'active': true }]"
+  },
+  "dropWhile": {
+    "name": "dropWhile",
+    "description": "Removes elements from the beginning of an array that satisfy the given condition.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "predicate",
+        "type": "string | object | Function | any[]",
+        "description": "- The condition to test the elements against.\n- Can be an object to match the properties,\n- A function to test each element,\n- A string to check if the property exists,\n- Or an array for matching multiple conditions."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array with elements removed from the beginning that meet the condition."
+    },
+    "example": "[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | dropWhile({ 'user': 'pebbles', 'active': false });\n=> [{ 'user': 'barney', 'active': true }, { 'user': 'fred', 'active': false }]\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | dropWhile(['active', false]);\n=> [{ 'user': 'barney', 'active': true }]\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | dropWhile('active');\n=> [{ 'user': 'fred', 'active': false }, { 'user': 'pebbles', 'active': false }]"
+  },
+  "fill": {
+    "name": "fill",
+    "description": "Fills elements in an array with a specified value.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to fill the array with."
+      },
+      {
+        "name": "start",
+        "type": "number",
+        "description": "- The start index to begin filling (inclusive)."
+      },
+      {
+        "name": "end",
+        "type": "number",
+        "description": "- The end index to stop filling (exclusive)."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array with the specified value filling the elements."
+    },
+    "example": "[1, 2, 3] | fill(4);\n=> [4, 4, 4]\n\n[1, 2, 3] | fill(4, 1, 2);\n=> [1, 4, 4]"
+  },
+  "findIndex": {
+    "name": "findIndex",
+    "description": "Finds the index of the first element in an array that satisfies the given condition.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to search."
+      },
+      {
+        "name": "predicate",
+        "type": "string | object | Function | any[]",
+        "description": "- The condition to test each element against.\n- Can be an object to match the properties,\n- A function to test each element,\n- A string to check if the property exists,\n- Or an array for matching multiple conditions."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The index of the first element that satisfies the condition, or -1 if no match is found."
+    },
+    "example": "[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | findIndex({ 'user': 'fred', 'active': false });\n=> 1\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | findIndex(['active', false]);\n=> 1\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | findIndex('active');\n=> 0"
+  },
+  "findLastIndex": {
+    "name": "findLastIndex",
+    "description": "Finds the index of the last element in an array that satisfies the given condition.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to search."
+      },
+      {
+        "name": "predicate",
+        "type": "string | object | Function | any[]",
+        "description": "- The condition to test each element against.\n- Can be an object to match the properties,\n- A function to test each element,\n- A string to check if the property exists,\n- Or an array for matching multiple conditions."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The index of the last element that satisfies the condition, or -1 if no match is found."
+    },
+    "example": "[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | findLastIndex({ 'user': 'fred', 'active': false });\n=> 2\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | findLastIndex(['active', false]);\n=> 2\n\n[\n  { 'user': 'barney',  'active': true },\n  { 'user': 'fred',    'active': false },\n  { 'user': 'pebbles', 'active': false }\n] | findLastIndex('active');\n=> 0"
+  },
+  "flatten": {
+    "name": "flatten",
+    "description": "Flattens a nested array one level deep.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to flatten."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array with one level of nested arrays flattened."
+    },
+    "example": "[1, [2, 3, [4]]] | flatten();\n=> [1, 2, 3, [4]]\n\n['a', ['b', 'c']] | flatten();\n=> ['a', 'b', 'c']"
+  },
+  "flattenDeep": {
+    "name": "flattenDeep",
+    "description": "Flattens a nested array completely, recursively.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to flatten."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array with all nested arrays completely flattened."
+    },
+    "example": "[1, [2, 3, [4]]] | flattenDeep();\n=> [1, 2, 3, 4]\n\n['a', [['b'], 'c']] | flattenDeep();\n=> ['a', 'b', 'c']"
+  },
+  "flatMapDepth": {
+    "name": "flatMapDepth",
+    "description": "Flattens a mapped array up to a specified depth.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be mapped and flattened."
+      },
+      {
+        "name": "iteratee",
+        "type": "Function",
+        "description": "- The function invoked per element."
+      },
+      {
+        "name": "depth",
+        "type": "number",
+        "description": "- The maximum recursion depth."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new flattened array."
+    },
+    "example": "[1, [2, [3, [4]], 5]] | flatMapDepth(1);\n=> [1, 2, [3, [4]], 5]\n\n[1, [2, [3, [4]], 5]] | flatMapDepth(2);\n=> [1, 2, 3, [4], 5]"
+  },
+  "fromPairs": {
+    "name": "fromPairs",
+    "description": "Converts an array of key-value pairs into an object.",
+    "params": [
+      {
+        "name": "pairs",
+        "type": "any[]",
+        "description": "- The array of key-value pairs."
+      }
+    ],
+    "returns": {
+      "type": "Record<string, any>",
+      "description": "- The resulting object."
+    },
+    "example": "[['a', 1], ['b', 2]] | fromPairs();\n=> { 'a': 1, 'b': 2 }\n\n[['name', 'fred'], ['age', 30]] | fromPairs();\n=> { name: 'fred', age: 30 }"
+  },
+  "every": {
+    "name": "every",
+    "description": "Checks if all elements in a collection pass the predicate check.",
+    "params": [
+      {
+        "name": "collection",
+        "type": "any",
+        "description": "- The collection to iterate over."
+      },
+      {
+        "name": "predicate",
+        "type": "any",
+        "description": "- The function or criteria to check against."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Returns `true` if all elements pass the check, else `false`."
+    },
+    "example": "var users = [\n  { 'user': 'barney', 'age': 36, 'active': false },\n  { 'user': 'fred',   'age': 40, 'active': false }\n];\n\nusers | every({ 'user': 'barney', 'active': false });\n=> false\n\nusers | every(['active', false]);\n=> true\n\nusers | every('active');\n=> false"
+  },
+  "initial": {
+    "name": "initial",
+    "description": "Get all elements of an array except the last one.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to process."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- A new array excluding the last element."
+    },
+    "example": "[1, 2, 3] | initial();\n=> [1, 2]\n\n['a', 'b', 'c'] | initial();\n=> ['a', 'b']"
+  },
+  "intersection": {
+    "name": "intersection",
+    "description": "Returns a new array with the intersection of the provided arrays.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The first array."
+      },
+      {
+        "name": "arrays",
+        "type": "any[]",
+        "description": "- Additional arrays to compare."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The array of intersecting values."
+    },
+    "example": "[1, 2, 3] | intersection([2, 1]);\n=> [1, 2]"
+  },
+  "intersectionBy": {
+    "name": "intersectionBy",
+    "description": "Creates an array of unique values that are included in all given arrays,\nusing a specified iteratee for comparison.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to inspect."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": "- The arrays to compare."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array of intersected values."
+    },
+    "example": "[{ 'x': 1 }] | intersectionBy([{ 'x': 2 }, { 'x': 1 }], 'x');\n=> [{'x': 1}]"
+  },
+  "intersectionWith": {
+    "name": "intersectionWith",
+    "description": "Creates an array of unique values that are included in all given arrays, using a comparator for equality checks.",
+    "params": [
+      {
+        "name": "array",
+        "type": "T1[]",
+        "description": "- The array to inspect."
+      },
+      {
+        "name": "values",
+        "type": "T2[]",
+        "description": "- The other arrays to compare."
+      },
+      {
+        "name": "comparator",
+        "type": "import(\"C:/workspace/topo-application-ui/packages/expression/src/type\").Comparator2<T1, T2>",
+        "description": "- The comparator invoked per element."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The new array of intersecting values."
+    },
+    "example": "[{ 'x': 1 }] | intersectionWith([{ 'x': 2 }, { 'x': 1 }], isEqual);\n=> [{ 'x': 1 }]"
+  },
+  "join": {
+    "name": "join",
+    "description": "Join elements of an array into a string, separated by a given separator.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to join."
+      },
+      {
+        "name": "separator",
+        "type": "string",
+        "description": "- The separator to use between elements."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The joined string."
+    },
+    "example": "['a', 'b', 'c'] | join('~');\n=> 'a~b~c'"
+  },
+  "pull": {
+    "name": "pull",
+    "description": "Removes all elements from an array that are equal to the given values.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": "- The values to remove from the array."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The modified array with the specified values removed."
+    },
+    "example": "[1, 2, 3, 1, 2, 3] | pull(2, 3);\n=> [1, 1]"
+  },
+  "pullAll": {
+    "name": "pullAll",
+    "description": "Remove all occurrences of the specified values from an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": "- The values to remove from the array."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The modified array with specified values removed."
+    },
+    "example": "[1, 2, 3, 1, 2, 3] | pullAll([2, 3]);\n=> [1, 1]"
+  },
+  "pullAllBy": {
+    "name": "pullAllBy",
+    "description": "Removes all elements from an array that are included in a given values array, based on a specific criterion.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": "- The values to remove from the array."
+      },
+      {
+        "name": "iteratee",
+        "type": "string",
+        "description": "- The property or function to compare the values by."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The modified array."
+    },
+    "example": "[{ 'x': 1 }, { 'x': 2 }, { 'x': 3 }, { 'x': 1 }] | pullAllBy([{ 'x': 1 }, { 'x': 3 }], 'x');\n=> [{ 'x': 2 }]"
+  },
+  "pullAllWith": {
+    "name": "pullAllWith",
+    "description": "Removes elements from an array that are equal to elements in a given array,\nusing a comparator function to determine equality.",
+    "params": [
+      {
+        "name": "array",
+        "type": "T[]",
+        "description": "- The array to modify."
+      },
+      {
+        "name": "values",
+        "type": "T[]",
+        "description": "- The values to compare against."
+      },
+      {
+        "name": "comparator",
+        "type": "import(\"C:/workspace/topo-application-ui/packages/expression/src/type\").Comparator<T>",
+        "description": "- The function used to compare elements."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The modified array."
+    },
+    "example": "[{ 'x': 1, 'y': 2 }, { 'x': 3, 'y': 4 }, { 'x': 5, 'y': 6 }] | pullAllWith([{ 'x': 3, 'y': 4 }], isEqual);\n=> [{ 'x': 1, 'y': 2 }, { 'x': 5, 'y': 6 }]"
+  },
+  "pullAt": {
+    "name": "pullAt",
+    "description": "Removes elements from an array corresponding to the given indexes.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to remove elements from."
+      },
+      {
+        "name": "indexes",
+        "type": "number[]",
+        "description": "- The indexes of elements to remove."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The array of removed elements."
+    },
+    "example": "[5, 10, 15, 20] | pullAt(1, 3);\n=> [10, 20]"
+  },
+  "reverse": {
+    "name": "reverse",
+    "description": "Reverse the order of elements in an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be reversed."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The reversed array."
+    },
+    "example": "[1, 2, 3] | reverse();\n=> [3, 2, 1]"
+  },
+  "slice": {
+    "name": "slice",
+    "description": "Slice an array from a start position to an end position, excluding the end itself.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be sliced."
+      },
+      {
+        "name": "start",
+        "type": "number",
+        "description": "- The start position of the slice."
+      },
+      {
+        "name": "end",
+        "type": "number",
+        "description": "- The end position of the slice (exclusive)."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The sliced array."
+    },
+    "example": "[1, 2, 3] | slice(0, 2);\n=> [2, 1]"
+  },
+  "sortedIndex": {
+    "name": "sortedIndex",
+    "description": "Find the smallest index at which a value should be inserted into a sorted array\nto maintain its sorted order using binary search.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The sorted array to be searched."
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The value to be inserted into the array."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The index at which the value should be inserted."
+    },
+    "example": "[30, 50] | sortedIndex(40);\n=> 1"
+  },
+  "sortedIndexBy": {
+    "name": "sortedIndexBy",
+    "description": "Find the smallest index at which a value should be inserted into a sorted array\nto maintain its sorted order using binary search, with an iteratee for custom comparison.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The sorted array to be searched."
+      },
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be inserted into the array."
+      },
+      {
+        "name": "iteratee",
+        "type": "string | Function",
+        "description": "- The iteratee function to customize the comparison."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The index at which the value should be inserted."
+    },
+    "example": "[{ 'x': 4 }, { 'x': 5 }] | sortedIndexBy({ 'x': 4 }, 'x');\n=> 0"
+  },
+  "sortedLastIndex": {
+    "name": "sortedLastIndex",
+    "description": "Find the largest index at which a value should be inserted into a sorted array\nto maintain its sorted order using binary search.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The sorted array to be searched."
+      },
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be inserted into the array."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The index at which the value should be inserted."
+    },
+    "example": "[4, 5, 5, 5, 6] | sortedLastIndex(5);\n=> 4"
+  },
+  "sortedLastIndexBy": {
+    "name": "sortedLastIndexBy",
+    "description": "Find the largest index at which a value should be inserted into a sorted array\nto maintain its sorted order using binary search, with an iteratee for custom comparison.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The sorted array to be searched."
+      },
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be inserted into the array."
+      },
+      {
+        "name": "iteratee",
+        "type": "string | Function",
+        "description": "- The iteratee function to customize the comparison."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The index at which the value should be inserted."
+    },
+    "example": "[{ 'x': 4 }, { 'x': 5 }] | sortedLastIndexBy({ 'x': 4 }, 'x');\n=> 1"
+  },
+  "sortedUniq": {
+    "name": "sortedUniq",
+    "description": "Create a sorted array of unique values, optimized for sorted arrays.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The sorted array to be processed."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The array of unique values."
+    },
+    "example": "[1, 1, 2] | sortedUniq();\n=> [1, 2]"
+  },
+  "sortedUniqBy": {
+    "name": "sortedUniqBy",
+    "description": "Create a sorted array of unique values, optimized for sorted arrays, with an iteratee for custom comparison.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The sorted array to be processed."
+      },
+      {
+        "name": "iteratee",
+        "type": "string | Function",
+        "description": "- The iteratee function or property name for custom uniqueness comparison."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The array of unique values."
+    },
+    "example": "[1.1, 1.2, 2.3, 2.4] | sortedUniqBy(Math.floor);\n=> [1.1, 2.3]\n\n[{ 'x': 4 }, { 'x': 4 }, { 'x': 5 }] | sortedUniqBy('x');\n=> [{ 'x': 4 }, { 'x': 5 }]"
+  },
+  "take": {
+    "name": "take",
+    "description": "Create a slice of the array with the first `n` elements.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be sliced."
+      },
+      {
+        "name": "n",
+        "type": "number",
+        "description": "- The number of elements to take."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The sliced array."
+    },
+    "example": "[1, 2, 3] | take();\n=> [1]\n\n[1, 2, 3] | take(2);\n=> [1, 2]"
+  },
+  "takeRight": {
+    "name": "takeRight",
+    "description": "Create a slice of the array with the last `n` elements.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be sliced."
+      },
+      {
+        "name": "n",
+        "type": "number",
+        "description": "- The number of elements to take from the end."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The sliced array."
+    },
+    "example": "[1, 2, 3] | takeRight();\n=> [3]\n\n[1, 2, 3] | takeRight(2);\n=> [2, 3]"
+  },
+  "takeRightWhile": {
+    "name": "takeRightWhile",
+    "description": "Create a slice of the array with the last elements, based on the predicate returning falsy.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be processed."
+      },
+      {
+        "name": "predicate",
+        "type": "any",
+        "description": "- The function or property name for the condition."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The slice of elements taken."
+    },
+    "example": "[{ 'user': 'barney', 'active': true }] | takeRightWhile({ 'user': 'pebbles', 'active': false });\n=> [{ 'user': 'pebbles', 'active': false }]"
+  },
+  "takeWhile": {
+    "name": "takeWhile",
+    "description": "Create a slice of the array with the first elements, based on the predicate returning falsy.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be processed."
+      },
+      {
+        "name": "predicate",
+        "type": "any",
+        "description": "- The function or property name for the condition."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The slice of elements taken."
+    },
+    "example": "[{ 'user': 'barney', 'active': true }] | takeWhile({ 'user': 'pebbles', 'active': false });\n=> [{ 'user': 'pebbles', 'active': false }]"
+  },
+  "union": {
+    "name": "union",
+    "description": "Create a new array of unique values, based on the order of elements.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be processed."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": ""
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The array of unique values."
+    },
+    "example": "[1, 2] | union([2]);\n=> [1, 2]"
+  },
+  "unionBy": {
+    "name": "unionBy",
+    "description": "Create a new array of unique values, based on an iteratee for custom comparison.",
+    "params": [
+      {
+        "name": "array",
+        "type": "any[]",
+        "description": "- The array to be processed."
+      },
+      {
+        "name": "values",
+        "type": "any[]",
+        "description": ""
+      },
+      {
+        "name": "iteratee",
+        "type": "string | Function",
+        "description": "- The iteratee function or property name for custom uniqueness comparison."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The array of unique values."
+    },
+    "example": "[{ 'x': 2 }, { 'x': 1 }] | unionBy([{ 'x': 1 }], 'x');\n=> [{ 'x': 1 }, { 'x': 2 }]"
+  },
+  "unionWith": {
+    "name": "unionWith",
+    "description": "Create a new array of unique values, based on a comparator function for custom comparison.",
+    "params": [
+      {
+        "name": "array",
+        "type": "T[]",
+        "description": "- The array to be processed."
+      },
+      {
+        "name": "values",
+        "type": "T[]",
+        "description": "- The values to be compared."
+      },
+      {
+        "name": "comparator",
+        "type": "import(\"C:/workspace/topo-application-ui/packages/expression/src/type\").Comparator<T>",
+        "description": "- The comparator function."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The array of unique values."
+    },
+    "example": "[{ 'x': 1, 'y': 2 }] | unionWith([{ 'x': 1, 'y': 2 }], isEqual);\n=> [{ 'x': 1, 'y': 2 }]"
+  },
+  "now": {
+    "name": "now",
+    "description": "Get the current timestamp.",
+    "params": [],
+    "returns": {
+      "type": "string",
+      "description": "- The current timestamp in ISO format."
+    },
+    "example": "now();\n=> 2023-07-05T09:09:09.000Z"
+  },
+  "today": {
+    "name": "today",
+    "description": "Get today's date at midnight.",
+    "params": [],
+    "returns": {
+      "type": "string",
+      "description": "- Today's date in ISO format, starting at midnight."
+    },
+    "example": "today();\n=> 2023-07-05 00:00:00"
+  },
+  "todayEnd": {
+    "name": "todayEnd",
+    "description": "Get today's date at the end of the day.",
+    "params": [],
+    "returns": {
+      "type": "string",
+      "description": "- Today's date in ISO format, ending at 23:59:59."
+    },
+    "example": "todayEnd();\n=> 2023-07-05 23:59:59"
+  },
+  "monthStart": {
+    "name": "monthStart",
+    "description": "Get the first day of the current month.",
+    "params": [],
+    "returns": {
+      "type": "string",
+      "description": "- The first day of the current month in ISO format."
+    },
+    "example": "monthStart();\n=> 2023-07-01"
+  },
+  "monthEnd": {
+    "name": "monthEnd",
+    "description": "Get the last day of the current month.",
+    "params": [],
+    "returns": {
+      "type": "string",
+      "description": "- The last day of the current month in ISO format."
+    },
+    "example": "monthEnd();\n=> 2023-07-31"
+  },
+  "yearStart": {
+    "name": "yearStart",
+    "description": "Get the first day of the current year.",
+    "params": [],
+    "returns": {
+      "type": "string",
+      "description": "- The first day of the current year in ISO format."
+    },
+    "example": "yearStart();\n=> 2023-01-01"
+  },
+  "yearEnd": {
+    "name": "yearEnd",
+    "description": "Get the last day of the current year.",
+    "params": [],
+    "returns": {
+      "type": "string",
+      "description": "- The last day of the current year in ISO format."
+    },
+    "example": "yearEnd();\n=> 2023-12-31"
+  },
+  "customStart": {
+    "name": "customStart",
+    "description": "Get the start time of a specified date unit.",
+    "params": [
+      {
+        "name": "date",
+        "type": "string",
+        "description": "- The date to be processed."
+      },
+      {
+        "name": "unit",
+        "type": "import(\"C:/workspace/topo-application-ui/node_modules/.pnpm/dayjs@1.11.13/node_modules/dayjs/index\").OpUnitType",
+        "description": "- The unit of time (e.g., 'month', 'day')."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The start time of the specified date unit in ISO format."
+    },
+    "example": "customStart('2023-01-05', 'month');\n=> 2023-01-01\n\n'2023-01-05' | customStart('month');\n=> 2023-01-01"
+  },
+  "customEnd": {
+    "name": "customEnd",
+    "description": "Get the end time of a specified date unit.",
+    "params": [
+      {
+        "name": "date",
+        "type": "string",
+        "description": "- The date to be processed."
+      },
+      {
+        "name": "unit",
+        "type": "import(\"C:/workspace/topo-application-ui/node_modules/.pnpm/dayjs@1.11.13/node_modules/dayjs/index\").OpUnitType",
+        "description": "- The unit of time (e.g., 'month', 'day')."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The end time of the specified date unit in ISO format."
+    },
+    "example": "customEnd('2023-01-05', 'month');\n=> 2023-01-31\n\n'2023-01-05' | customEnd('month');\n=> 2023-01-31"
+  },
+  "formatDate": {
+    "name": "formatDate",
+    "description": "Format a date according to a specified format.",
+    "params": [
+      {
+        "name": "date",
+        "type": "string",
+        "description": "- The date to be formatted."
+      },
+      {
+        "name": "format",
+        "type": "string",
+        "description": "- The date to be formatted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The formatted date string."
+    },
+    "example": "formatDate('2023-07-05', 'YYYY-MM-DD');\n=> 2023-07-05\n\n'2023/07/05' | formatDate('YYYY-MM-DD');\n=> 2023-07-05"
+  },
+  "castArray": {
+    "name": "castArray",
+    "description": "Converts a value to an array if it's not already an array.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be converted."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The converted array."
+    },
+    "example": "'3' | castArray;\n=> ['3']\n\n[1, 2, 3] | castArray;\n=> [1, 2, 3]"
+  },
+  "clone": {
+    "name": "clone",
+    "description": "Creates a shallow copy of a value.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be cloned."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The shallow cloned value."
+    },
+    "example": "{ 'a': 1 } | clone;\n=> { 'a': 1 }"
+  },
+  "cloneDeep": {
+    "name": "cloneDeep",
+    "description": "Creates a deep copy of a value.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be deeply cloned."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The deep cloned value."
+    },
+    "example": "{ 'a': 1 } | cloneDeep;\n=> { 'a': 1 }"
+  },
+  "eq": {
+    "name": "eq",
+    "description": "Compares two values for equality.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The first value to be compared."
+      },
+      {
+        "name": "other",
+        "type": "any",
+        "description": "- The second value to be compared."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if values are equal, false otherwise."
+    },
+    "example": "1 | eq(1);\n=> true\n\n1 | eq(2);\n=> false"
+  },
+  "gt": {
+    "name": "gt",
+    "description": "Checks if the first value is greater than the second.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The first value to be compared."
+      },
+      {
+        "name": "other",
+        "type": "any",
+        "description": "- The second value to be compared."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the first value is greater, false otherwise."
+    },
+    "example": "1 | gt(2);\n=> false\n\n2 | gt(1);\n=> true"
+  },
+  "gte": {
+    "name": "gte",
+    "description": "Checks if the first value is greater than or equal to the second.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The first value to be compared."
+      },
+      {
+        "name": "other",
+        "type": "any",
+        "description": "- The second value to be compared."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the first value is greater than or equal to the second, false otherwise."
+    },
+    "example": "1 | gte(2);\n=> false\n\n2 | gte(1);\n=> true"
+  },
+  "isArray": {
+    "name": "isArray",
+    "description": "Checks if the value is an array.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be checked."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the value is an array, false otherwise."
+    },
+    "example": "[1, 2, 3] | isArray();\n=> true\n\n'hello' | isArray();\n=> false\n\n{ 'a': 1 } | isArray();\n=> false"
+  },
+  "isBoolean": {
+    "name": "isBoolean",
+    "description": "Checks if the value is a boolean.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be checked."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the value is a boolean, false otherwise."
+    },
+    "example": "true | isBoolean();\n=> true\n\nfalse | isBoolean();\n=> true\n\n'true' | isBoolean();\n=> false\n\nnull | isBoolean();\n=> false"
+  },
+  "isDate": {
+    "name": "isDate",
+    "description": "Checks if the value is a date object.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be checked."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the value is a date object, false otherwise."
+    },
+    "example": "new Date() | isDate();\n=> true\n\n'2010-10-10' | isDate();\n=> false"
+  },
+  "isEmpty": {
+    "name": "isEmpty",
+    "description": "Checks if the value is empty.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be checked."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the value is empty, false otherwise."
+    },
+    "example": "'' | isEmpty();\n=> true\n\n[] | isEmpty();\n=> true\n\n{} | isEmpty();\n=> true\n\n[1, 2, 3] | isEmpty();\n=> false"
+  },
+  "isEqual": {
+    "name": "isEqual",
+    "description": "Compares two values for deep equality.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The first value to be compared."
+      },
+      {
+        "name": "other",
+        "type": "any",
+        "description": "- The second value to be compared."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if values are deeply equal, false otherwise."
+    },
+    "example": "1 | isEqual(1);\n=> true\n\n1 | isEqual(2);\n=> false"
+  },
+  "isInteger": {
+    "name": "isInteger",
+    "description": "Checks if the value is an integer.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be checked."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the value is an integer, false otherwise."
+    },
+    "example": "3 | isInteger();\n=> true\n\n3.1 | isInteger();\n=> false"
+  },
+  "isLength": {
+    "name": "isLength",
+    "description": "Checks if the value is a valid length.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to be checked."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the value is a valid length, false otherwise."
+    },
+    "example": "3 | isLength();\n=> true\n\n3.1 | isLength();\n=> false"
+  },
+  "isMatch": {
+    "name": "isMatch",
+    "description": "Checks if a value is deeply equal to a given object.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The object to compare the value with."
+      },
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to compare the value with."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is a match."
+    },
+    "example": "{ 'a': 1 } | isMatch({ 'a': 1 });\n=> true\n\n{ 'a': 1 } | isMatch({ 'a': 2 });\n=> false"
+  },
+  "isNaN": {
+    "name": "isNaN",
+    "description": "Checks if the value is NaN.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is NaN."
+    },
+    "example": "NaN | isNaN();\n=> true\n\n'abc' | isNaN();\n=> false"
+  },
+  "isNil": {
+    "name": "isNil",
+    "description": "Checks if the value is null or undefined.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is null or undefined."
+    },
+    "example": "null | isNil();\n=> true\n\nundefined | isNil();\n=> true\n\n'hello' | isNil();\n=> false"
+  },
+  "isNull": {
+    "name": "isNull",
+    "description": "Checks if the value is null.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is null."
+    },
+    "example": "null | isNull();\n=> true\n\nundefined | isNull();\n=> false"
+  },
+  "isNumber": {
+    "name": "isNumber",
+    "description": "Checks if the value is a number.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is a number."
+    },
+    "example": "3 | isNumber();\n=> true\n\n3.1 | isNumber();\n=> true\n\nNaN | isNumber();\n=> false"
+  },
+  "isObject": {
+    "name": "isObject",
+    "description": "Checks if the value is an object.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is an object."
+    },
+    "example": "{} | isObject();\n=> true\n\n[1, 2, 3] | isObject();\n=> true\n\nnull | isObject();\n=> false\n\n'hello' | isObject();\n=> false"
+  },
+  "isRegExp": {
+    "name": "isRegExp",
+    "description": "Checks if the value is a regular expression.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is a regular expression."
+    },
+    "example": "/abc/ | isRegExp();\n=> true\n\n'abc' | isRegExp();\n=> false"
+  },
+  "isSafeInteger": {
+    "name": "isSafeInteger",
+    "description": "Checks if the value is a safe integer.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is a safe integer."
+    },
+    "example": "3 | isSafeInteger();\n=> true\n\n3.1 | isSafeInteger();\n=> false"
+  },
+  "isString": {
+    "name": "isString",
+    "description": "Checks if the value is a string.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Whether the value is a string."
+    },
+    "example": "'hello' | isString();\n=> true\n\n123 | isString();\n=> false\n\n[] | isString();\n=> false"
+  },
+  "lt": {
+    "name": "lt",
+    "description": "Check if a value is less than the provided value.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The value to compare against."
+      },
+      {
+        "name": "otherValue",
+        "type": "number",
+        "description": "- The value to compare with."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Returns true if the value is less than the given value."
+    },
+    "example": "1 | lt(2);\n=> true\n\n2 | lt(1);\n=> false"
+  },
+  "lte": {
+    "name": "lte",
+    "description": "Check if a value is less than or equal to the provided value.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The value to compare against."
+      },
+      {
+        "name": "otherValue",
+        "type": "number",
+        "description": "- The value to compare with."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Returns true if the value is less than or equal to the given value."
+    },
+    "example": "1 | lte(2);\n=> true\n\n2 | lte(1);\n=> false"
+  },
+  "toArray": {
+    "name": "toArray",
+    "description": "Convert a value to an array.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to convert."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- Returns the converted array."
+    },
+    "example": "'hello' | toArray();\n=> ['h', 'e', 'l', 'l', 'o']\n\n1 | toArray();\n=> [1]\n\nnull | toArray();\n=> []"
+  },
+  "toFinite": {
+    "name": "toFinite",
+    "description": "Convert a value to a finite number.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to convert."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- Returns the finite number."
+    },
+    "example": "3.1 | toFinite;\n=> 3.1\n\nNumber.MIN_VALUE | toFinite;\n=> 5e-324\n\nInfinity | toFinite;\n=> 1.7976931348623157e+308\n\n-Infinity | toFinite;\n=> -1.7976931348623157e+308"
+  },
+  "toInteger": {
+    "name": "toInteger",
+    "description": "Convert a value to an integer.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to convert."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- Returns the converted integer."
+    },
+    "example": "3.1 | toInteger;\n=> 3\n\nNumber.MIN_VALUE | toInteger;\n=> 0\n\nInfinity | toInteger;\n=> 1.7976931348623157e+308\n\n-Infinity | toInteger;\n=> -1.7976931348623157e+308"
+  },
+  "toLength": {
+    "name": "toLength",
+    "description": "Convert a value to a length.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to convert."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- Returns the converted length."
+    },
+    "example": "3.1 | toLength;\n=> 3\n\nNumber.MIN_VALUE | toLength;\n=> 0\n\nInfinity | toLength;\n=> 1.7976931348623157e+308\n\n-Infinity | toLength;\n=> 0"
+  },
+  "toNumber": {
+    "name": "toNumber",
+    "description": "Convert a value to a number.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to convert."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- Returns the converted number."
+    },
+    "example": "3.1 | toNumber;\n=> 3.1\n\nNumber.MIN_VALUE | toNumber;\n=> 5e-324\n\nInfinity | toNumber;\n=> Infinity\n\n-Infinity | toNumber;\n=> -Infinity"
+  },
+  "toString": {
+    "name": "toString",
+    "description": "Convert a value to a string.",
+    "params": [
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The value to convert."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- Returns the converted string."
+    },
+    "example": "3.1 | toString;\n=> '3.1'\n\nNumber.MIN_VALUE | toString;\n=> '5e-324'\n\nInfinity | toString;\n=> 'Infinity'\n\n-Infinity | toString;\n=> '-Infinity'"
+  },
+  "jpQuery": {
+    "name": "jpQuery",
+    "description": "Query an object using jsonpath.",
+    "params": [
+      {
+        "name": "data",
+        "type": "any",
+        "description": "- The data to query."
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "description": "- The jsonpath expression to query the data."
+      },
+      {
+        "name": "options",
+        "type": "Omit<import(\"jsonpath-plus\").JSONPathOptions, \"json\" | \"path\">",
+        "description": "- Optional options for the query."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The result of the query."
+    },
+    "example": "jpQuery({ a: { b: 1 } }, '$.a.b')\n=> 1"
+  },
+  "add": {
+    "name": "add",
+    "description": "Add multiple numbers and return the sum.",
+    "params": [
+      {
+        "name": "values",
+        "type": "number[]",
+        "description": "- The numbers to be added."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The sum of the numbers."
+    },
+    "example": "1 | add(2, 3);\n=> 6\n\n1 | add(2, 3, 4);\n=> 10\n\n1 | add(2, 3, 4, 5);\n=> 15"
+  },
+  "abs": {
+    "name": "abs",
+    "description": "Return the absolute value of a number.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be processed."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The absolute value of the number."
+    },
+    "example": "-1 | abs;\n=> 1"
+  },
+  "subtract": {
+    "name": "subtract",
+    "description": "Subtract multiple numbers and return the result.",
+    "params": [
+      {
+        "name": "x",
+        "type": "number",
+        "description": "- The first number to be subtracted."
+      },
+      {
+        "name": "y",
+        "type": "number",
+        "description": "- The second number to be subtracted."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The result of the subtraction."
+    },
+    "example": "5 | subtract(2);\n=> 2"
+  },
+  "multiply": {
+    "name": "multiply",
+    "description": "Multiply multiple numbers and return the product.",
+    "params": [
+      {
+        "name": "values",
+        "type": "number[]",
+        "description": "- The numbers to be multiplied."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The product of the numbers."
+    },
+    "example": "5 | multiply(2, 3);\n=> 15\n\n5 | multiply(2, 3, 4);\n=> 60\n\n5 | multiply(2, 3, 4, 5);\n=> 120"
+  },
+  "divide": {
+    "name": "divide",
+    "description": "Divide multiple numbers and return the result.",
+    "params": [
+      {
+        "name": "x",
+        "type": "number",
+        "description": "- The first number to divide."
+      },
+      {
+        "name": "y",
+        "type": "number",
+        "description": "- The second number to divide."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The result of the division."
+    },
+    "example": "5 | divide(2);\n=> 2.5"
+  },
+  "mod": {
+    "name": "mod",
+    "description": "Get the remainder of a division.",
+    "params": [
+      {
+        "name": "a",
+        "type": "number",
+        "description": "- The dividend."
+      },
+      {
+        "name": "b",
+        "type": "number",
+        "description": "- The dividend."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The remainder."
+    },
+    "example": "5 | mod(2, 3);\n=> 1\n\n5 | mod(2, 3, 4);\n=> 2\n\n5 | mod(2, 3, 4, 5);\n=> 0"
+  },
+  "pow": {
+    "name": "pow",
+    "description": "Calculate the power of a number raised to the specified exponent.",
+    "params": [
+      {
+        "name": "x",
+        "type": "number",
+        "description": "- The base number."
+      },
+      {
+        "name": "y",
+        "type": "number",
+        "description": "- The exponent."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The result of raising the base to the power of the exponents."
+    },
+    "example": "5 | pow(2, 3);\n=> 125\n\n5 | pow(2, 3, 4);\n=> 15625\n\n5 | pow(2, 3, 4, 5);\n=> 390625"
+  },
+  "sqrt": {
+    "name": "sqrt",
+    "description": "Calculate the square root of a number.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to find the square root of."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The square root of the number."
+    },
+    "example": "5 | sqrt(2);\n=> 2.23606797749979\n\n5 | sqrt(2, 3);\n=> 2.6457513110645907\n\n5 | sqrt(2, 3, 4);\n=> 2.8284271247461903"
+  },
+  "round": {
+    "name": "round",
+    "description": "Round a number to a specified number of decimal places.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be rounded."
+      },
+      {
+        "name": "precision",
+        "type": "number",
+        "description": "- The number of decimal places to round to."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The rounded number."
+    },
+    "example": "2.335 | round(2);\n=> 2.34"
+  },
+  "ceil": {
+    "name": "ceil",
+    "description": "Round a number upward to the nearest integer.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be rounded up."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The rounded number."
+    },
+    "example": "2.335 | ceil(2);\n=> 2.34"
+  },
+  "floor": {
+    "name": "floor",
+    "description": "Round a number downward to the nearest integer.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be rounded down."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The rounded number."
+    },
+    "example": "2.335 | floor(2);\n=> 2.34"
+  },
+  "sum": {
+    "name": "sum",
+    "description": "Sum all the elements in an array.",
+    "params": [
+      {
+        "name": "values",
+        "type": "number[]",
+        "description": "- The array of numbers to sum."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The sum of the array elements."
+    },
+    "example": "[1, 2, 3] | sum();\n=> 6"
+  },
+  "mean": {
+    "name": "mean",
+    "description": "Calculate the mean (average) of an array of numbers.",
+    "params": [
+      {
+        "name": "values",
+        "type": "number[]",
+        "description": "- The array of numbers to calculate the mean of."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The mean of the array elements."
+    },
+    "example": "[1, 2, 3] | mean();\n=> 2"
+  },
+  "median": {
+    "name": "median",
+    "description": "Calculate the median of an array of numbers.",
+    "params": [
+      {
+        "name": "values",
+        "type": "number[]",
+        "description": "- The array of numbers to calculate the median of."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The median of the array elements."
+    },
+    "example": "[1, 2, 3] | median();\n=> 2"
+  },
+  "min": {
+    "name": "min",
+    "description": "Get the minimum value from an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "number[]",
+        "description": "- The array of numbers."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The minimum value in the array."
+    },
+    "example": "[1, 2, 3] | min();\n=> 1"
+  },
+  "max": {
+    "name": "max",
+    "description": "Get the maximum value from an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "number[]",
+        "description": "- The array of numbers."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The maximum value in the array."
+    },
+    "example": "[1, 2, 3] | max();\n=> 3"
+  },
+  "std": {
+    "name": "std",
+    "description": "Get the standard deviation of an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "number[]",
+        "description": "- The array of numbers."
+      }
+    ],
+    "returns": {
+      "type": "number | number[]",
+      "description": "- The standard deviation of the array."
+    },
+    "example": "[1, 2, 3] | std();\n=> 1"
+  },
+  "variance": {
+    "name": "variance",
+    "description": "Get the variance of an array.",
+    "params": [
+      {
+        "name": "array",
+        "type": "number[]",
+        "description": "- The array of numbers."
+      }
+    ],
+    "returns": {
+      "type": "number | number[]",
+      "description": "- The variance of the array."
+    },
+    "example": "[1, 2, 3] | variance();\n=> 1"
+  },
+  "random": {
+    "name": "random",
+    "description": "Generate a random number between 0 (inclusive) and 1 (exclusive).",
+    "params": [
+      {
+        "name": "min",
+        "type": "number",
+        "description": "- The minimum value (inclusive)."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "description": "- The maximum value (exclusive)."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- A random number between `min` and `max` (if provided), or between 0 and 1."
+    },
+    "example": "random();\n=> 0.123456789\n\nrandom(10);\n=> 7\n\nrandom(10, 20);\n=> 15"
+  },
+  "randomInt": {
+    "name": "randomInt",
+    "description": "Generate a random integer between a given range.",
+    "params": [
+      {
+        "name": "min",
+        "type": "number",
+        "description": "- The minimum value (inclusive)."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "description": "- The maximum value (exclusive)."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- A random integer between `min` and `max`."
+    },
+    "example": "randomInt();\n=> 7\n\nrandomInt(10);\n=> 7\n\nrandomInt(10, 20);\n=> 15"
+  },
+  "gcd": {
+    "name": "gcd",
+    "description": "Calculate the greatest common divisor (GCD) of given numbers.",
+    "params": [
+      {
+        "name": "values",
+        "type": "number[]",
+        "description": "- The numbers to calculate the GCD for."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The GCD of the numbers."
+    },
+    "example": "gcd(2, 4)\n=> 2\n\ngcd(2, 4, 6)\n=> 2"
+  },
+  "lcm": {
+    "name": "lcm",
+    "description": "Calculate the least common multiple (LCM) of given numbers.",
+    "params": [
+      {
+        "name": "x",
+        "type": "number",
+        "description": "- The first number."
+      },
+      {
+        "name": "y",
+        "type": "number",
+        "description": "- The second number."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The LCM of the numbers."
+    },
+    "example": "lcm(2, 4)\n=> 8"
+  },
+  "prime": {
+    "name": "prime",
+    "description": "Check if a number is prime.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to check."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the number is prime, false otherwise."
+    },
+    "example": "prime(2)\n=> true\n\nprime(4)\n=> false"
+  },
+  "formatNumber": {
+    "name": "formatNumber",
+    "description": "Format a number according to a specified format.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be formatted."
+      },
+      {
+        "name": "format",
+        "type": "string",
+        "description": "- The number to be formatted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The formatted number."
+    },
+    "example": "formatNumber(12345.678, '0,0.00');\n=> \"12,345.68\"\n\nformatNumber(12345.678, '$0,0.00');\n=> \"$12,345.68\"\n\nformatNumber(0.25, '0%');\n=> \"25%\""
+  },
+  "formatCurrency": {
+    "name": "formatCurrency",
+    "description": "Format a number into a currency format.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be formatted."
+      },
+      {
+        "name": "symbol",
+        "type": "string",
+        "description": "- The currency symbol (default is '$')."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The formatted currency."
+    },
+    "example": "formatCurrency(12345.678);\n=> \"$12,345.68\"\n\nformatCurrency(12345.678, '¥');\n=> \"¥12,345.68\""
+  },
+  "formatPercentage": {
+    "name": "formatPercentage",
+    "description": "Format a number into a percentage format.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be formatted (as a decimal)."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The formatted percentage."
+    },
+    "example": "formatPercentage(0.25);\n=> \"25.00%\"\n\nformatPercentage(1);\n=> \"100.00%\""
+  },
+  "formatThousand": {
+    "name": "formatThousand",
+    "description": "Format a number into a thousand separator format.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be formatted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The formatted number with thousand separators."
+    },
+    "example": "formatThousand(1234567);\n=> \"1,234,567\"\n\nformatThousand(1234.5678);\n=> \"1,235\""
+  },
+  "formatCustomCurrency": {
+    "name": "formatCustomCurrency",
+    "description": "Format a number into a custom currency format with a specified number of decimals.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be formatted."
+      },
+      {
+        "name": "symbol",
+        "type": "string",
+        "description": "- The currency symbol (default is '$')."
+      },
+      {
+        "name": "decimals",
+        "type": "number",
+        "description": "- The number of decimal places (default is 2)."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The formatted currency."
+    },
+    "example": "formatCustomCurrency(12345.678, '€', 3);\n=> \"€12,345.678\"\n\nformatCustomCurrency(12345.678, '¥', 0);\n=> \"¥12,346\""
+  },
+  "formatAuto": {
+    "name": "formatAuto",
+    "description": "Automatically format a number as either an integer or with two decimal places.",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "description": "- The number to be formatted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The formatted number."
+    },
+    "example": "formatAuto(1234567);\n=> \"1,234,567\"\n\nformatAuto(1234.5678);\n=> \"1,234.57\""
+  },
+  "findKey": {
+    "name": "findKey",
+    "description": "Find the first key in an object that satisfies the predicate function.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to search."
+      },
+      {
+        "name": "predicate",
+        "type": "any",
+        "description": "- The function to test each value."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The key of the first element that satisfies the predicate."
+    },
+    "example": "{\n  'barney':  { 'age': 36, 'active': true },\n  'fred':    { 'age': 40, 'active': false },\n  'pebbles': { 'age': 1,  'active': true }\n} | findKey({ 'age': 1, 'active': true });\n=> 'pebbles'\n\n{\n  'barney':  { 'age': 36, 'active': true },\n  'fred':    { 'age': 40, 'active': false },\n  'pebbles': { 'age': 1,  'active': true }\n} | findKey(['active', false]);\n=> 'fred'"
+  },
+  "findLastKey": {
+    "name": "findLastKey",
+    "description": "Find the last key in an object that satisfies the predicate function, starting from the end.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to search."
+      },
+      {
+        "name": "predicate",
+        "type": "any",
+        "description": "- The function to test each value."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The key of the last element that satisfies the predicate."
+    },
+    "example": "{\n  'barney':  { 'age': 36, 'active': true },\n  'fred':    { 'age': 40, 'active': false },\n  'pebbles': { 'age': 1,  'active': true }\n} | findLastKey({ 'age': 1, 'active': true });\n=> 'pebbles'\n\n{\n  'barney':  { 'age': 36, 'active': true },\n  'fred':    { 'age': 40, 'active': false },\n  'pebbles': { 'age': 1,  'active': true }\n} | findLastKey(['active', false]);\n=> 'fred'"
+  },
+  "get": {
+    "name": "get",
+    "description": "Safely get the value at a given path in an object.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to retrieve the value from."
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "description": "- The path to the value."
+      },
+      {
+        "name": "defaultValue",
+        "type": "any",
+        "description": "- The default value to return if the path doesn't exist."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The value at the given path or the default value."
+    },
+    "example": "{ 'a': { 'b': 2 } } | get('a.b');\n=> 2\n\n{ 'a': { 'b': { 'c': 3 } } } | get('a.b.c', 'default');\n=> 3\n\n{} | get('a.b', 'default');\n=> 'default'"
+  },
+  "has": {
+    "name": "has",
+    "description": "Check if a given path exists as a direct property in an object.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to check."
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "description": "- The path to check for."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the path exists as a direct property, otherwise false."
+    },
+    "example": "{ 'a': { 'b': 2 } } | has('a.b');\n=> true\n\n{ 'a': { 'b': { 'c': 3 } } } | has('a.b.c');\n=> true\n\n{} | has('a.b');\n=> false"
+  },
+  "invert": {
+    "name": "invert",
+    "description": "Invert the keys and values of an object. If values are duplicated, later values overwrite earlier ones.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to invert."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The object with inverted keys and values."
+    },
+    "example": "{ 'a': 1, 'b': 2, 'c': 1 } | invert;\n=> { '1': 'c', '2': 'b' }"
+  },
+  "invertBy": {
+    "name": "invertBy",
+    "description": "Invert the keys and values of an object using an iteratee function to determine the new values.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to invert."
+      },
+      {
+        "name": "iteratee",
+        "type": "any",
+        "description": "- The function to generate the inverted values."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The object with inverted keys and values."
+    },
+    "example": "{ 'a': 1, 'b': 2, 'c': 1 } | invertBy;\n=> { '1': ['a', 'c'], '2': ['b'] }"
+  },
+  "invoke": {
+    "name": "invoke",
+    "description": "Invoke a method at a given path in an object with arguments.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object containing the method to invoke."
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "description": "- The path to the method."
+      },
+      {
+        "name": "args",
+        "type": "any[]",
+        "description": "- The arguments to pass to the method."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The result of invoking the method."
+    },
+    "example": "{ 'a': [{ 'b': { 'c': [1, 2, 3, 4] } }] } | invoke('a[0].b.c.slice', 1, 3);\n=> [2, 3]"
+  },
+  "keys": {
+    "name": "keys",
+    "description": "Get the keys of an object.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to get the keys from."
+      }
+    ],
+    "returns": {
+      "type": "string[]",
+      "description": "- The keys of the object."
+    },
+    "example": "{ 'a': 1, 'b': 2 } | keys();\n=> ['a', 'b']\n\n['a', 'b', 'c'] | keys();\n=> ['0', '1', '2']"
+  },
+  "mapValues": {
+    "name": "mapValues",
+    "description": "Create a new object with the same keys as the original object, but with values generated by an iteratee function.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to iterate over."
+      },
+      {
+        "name": "iteratee",
+        "type": "any",
+        "description": "- The function to transform each value."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The new object with transformed values."
+    },
+    "example": "{\n  'fred': { 'user': 'fred', 'age': 40 },\n  'pebbles': { 'user': 'pebbles', 'age': 1 }\n} | mapValues('age');\n=> { 'fred': 40, 'pebbles': 1 }"
+  },
+  "merge": {
+    "name": "merge",
+    "description": "Deeply merge multiple objects.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The base object."
+      },
+      {
+        "name": "sources",
+        "type": "any[]",
+        "description": "- The objects to merge into the base object."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The merged object."
+    },
+    "example": "{ 'a': { 'b': 2 } } | merge({ 'c': 3 });\n=> { 'a': { 'b': 2 }, 'c': 3 }\n\n{ 'a': [1], 'b': [2] } | merge({ 'a': [3], 'c': [4] });\n=> { 'a': [3], 'b': [2], 'c': [4] }"
+  },
+  "omit": {
+    "name": "omit",
+    "description": "Create a new object excluding the specified properties.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to omit properties from."
+      },
+      {
+        "name": "props",
+        "type": "string[]",
+        "description": "- The properties to omit."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The new object with the omitted properties."
+    },
+    "example": "{ 'a': 1, 'b': '2', 'c': 3 } | omit(['a', 'c']);\n=> { 'b': '2' }"
+  },
+  "omitBy": {
+    "name": "omitBy",
+    "description": "Create a new object excluding properties based on a predicate function.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to omit properties from."
+      },
+      {
+        "name": "predicate",
+        "type": "any",
+        "description": "- The function to test each property."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The new object with the omitted properties."
+    },
+    "example": "{ 'a': 1, 'b': '2', 'c': 3 } | omitBy(isNumber);\n=> { 'b': '2' }"
+  },
+  "pick": {
+    "name": "pick",
+    "description": "Create a new object with only the specified properties.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to pick properties from."
+      },
+      {
+        "name": "props",
+        "type": "string[]",
+        "description": "- The properties to pick."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The new object with only the picked properties."
+    },
+    "example": "{ 'a': 1, 'b': '2', 'c': 3 } | pick(['a', 'c']);\n=> { 'a': 1, 'c': 3 }"
+  },
+  "pickBy": {
+    "name": "pickBy",
+    "description": "Create a new object with properties that satisfy a predicate function.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to pick properties from."
+      },
+      {
+        "name": "predicate",
+        "type": "any",
+        "description": "- The function to test each property."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The new object with only the properties that pass the predicate."
+    },
+    "example": "{ 'a': 1, 'b': '2', 'c': 3 } | pickBy(isNumber);\n=> { 'a': 1, 'c': 3 }"
+  },
+  "values": {
+    "name": "values",
+    "description": "Get the values of an object's properties.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to get the values from."
+      }
+    ],
+    "returns": {
+      "type": "any[]",
+      "description": "- The values of the object's properties."
+    },
+    "example": "{ 'a': 1, 'b': 2 } | values();\n=> [1, 2]\n\n['a', 'b', 'c'] | values();\n=> ['a', 'b', 'c']"
+  },
+  "set": {
+    "name": "set",
+    "description": "Safely set the value at a given path in an object.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to set the value in."
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "description": "- The path to the value."
+      },
+      {
+        "name": "value",
+        "type": "any",
+        "description": "- The object to set the value in."
+      }
+    ],
+    "returns": {
+      "type": "any",
+      "description": "- The updated object."
+    },
+    "example": "{ 'a': { 'b': 2 } } | set('a.b', 3);\n=> { 'a': { 'b': 3 } }\n\n{ 'a': { 'b': { 'c': 3 } } } | set('a.b.c', 'default');\n=> { 'a': { 'b': { 'c': 'default' } } }"
+  },
+  "unset": {
+    "name": "unset",
+    "description": "Remove a property at a given path in an object.",
+    "params": [
+      {
+        "name": "object",
+        "type": "any",
+        "description": "- The object to remove the property from."
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "description": "- The path to the property to remove."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- True if the property was removed, otherwise false."
+    },
+    "example": "{ 'a': [{ 'b': { 'c': 7 } }] } | unset('a[0].b.c');\n=> true"
+  },
+  "camelCase": {
+    "name": "camelCase",
+    "description": "Convert a string to camel case.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The camel-cased string."
+    },
+    "example": "'Foo Bar' | camelCase();\n=> 'fooBar'\n\n'--foo-bar--' | camelCase();\n=> 'fooBar'"
+  },
+  "capitalize": {
+    "name": "capitalize",
+    "description": "Capitalize the first letter of a string.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be capitalized."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The string with the first letter capitalized."
+    },
+    "example": "'FRED' | capitalize();\n=> 'Fred'\n\n'fred' | capitalize();\n=> 'Fred'"
+  },
+  "endsWith": {
+    "name": "endsWith",
+    "description": "Check if a string ends with the given target.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be checked."
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "description": "- The target string."
+      },
+      {
+        "name": "position",
+        "type": "number",
+        "description": "- The position to check up to."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Returns true if the string ends with the target."
+    },
+    "example": "'abc' | endsWith('c');\n=> true\n\n'abc' | endsWith('b');\n=> false\n\n'abc' | endsWith('b', 1);\n=> true"
+  },
+  "kebabCase": {
+    "name": "kebabCase",
+    "description": "Convert a string to kebab case (lowercase with hyphens).",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The kebab-cased string."
+    },
+    "example": "'Foo Bar' | kebabCase();\n=> 'foo-bar'\n\n'fooBar' | kebabCase();\n=> 'foo-bar'"
+  },
+  "lowerCase": {
+    "name": "lowerCase",
+    "description": "Convert a string to lowercase and remove spaces between words.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The lowercase string."
+    },
+    "example": "'Foo Bar' | lowerCase();\n=> 'foobar'\n\n'--Foo Bar--' | lowerCase();\n=> 'foobar'"
+  },
+  "lowerFirst": {
+    "name": "lowerFirst",
+    "description": "Convert the first letter of a string to lowercase.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The string with the first letter in lowercase."
+    },
+    "example": "'Fred' | lowerFirst();\n=> 'fred'\n\n'FRED' | lowerFirst();\n=> 'fRED'"
+  },
+  "pad": {
+    "name": "pad",
+    "description": "Pad a string to a specified length with spaces or other characters.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be padded."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "description": "- The target length of the string."
+      },
+      {
+        "name": "chars",
+        "type": "string",
+        "description": "- The characters used to pad the string."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The padded string."
+    },
+    "example": "'abc' | pad(8);\n=> '  abc   '\n\n'abc' | pad(8, '_-');\n=> '_-abc_-_'"
+  },
+  "padEnd": {
+    "name": "padEnd",
+    "description": "Pad a string to a specified length, with padding at the end of the string.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be padded."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "description": "- The target length of the string."
+      },
+      {
+        "name": "chars",
+        "type": "string",
+        "description": "- The characters used to pad the string."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The padded string."
+    },
+    "example": "'abc' | padEnd(8);\n=> 'abc****'\n\n'abc' | padEnd(8, '_-');\n=> 'abc_-__'"
+  },
+  "padStart": {
+    "name": "padStart",
+    "description": "Pad a string to a specified length, with padding at the start of the string.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be padded."
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "description": "- The target length of the string."
+      },
+      {
+        "name": "chars",
+        "type": "string",
+        "description": "- The characters used to pad the string."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The padded string."
+    },
+    "example": "'abc' | padStart(8);\n=> '****abc'\n\n'abc' | padStart(8, '_-');\n=> '_-__abc'"
+  },
+  "parseInt": {
+    "name": "parseInt",
+    "description": "Parse a string and return an integer of the specified radix (base).",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be parsed."
+      },
+      {
+        "name": "radix",
+        "type": "number",
+        "description": "- The base of the number."
+      }
+    ],
+    "returns": {
+      "type": "number",
+      "description": "- The parsed integer."
+    },
+    "example": "'10' | parseInt;\n=> 10\n\n'10' | parseInt(2);\n=> 3"
+  },
+  "repeat": {
+    "name": "repeat",
+    "description": "Repeat a string n times.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be repeated."
+      },
+      {
+        "name": "n",
+        "type": "number",
+        "description": "- The string to be repeated."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The repeated string."
+    },
+    "example": "'*' | repeat(3);\n=> '***'\n\n'abc' | repeat(2);\n=> 'abcabc'"
+  },
+  "replace": {
+    "name": "replace",
+    "description": "Replace a substring within a string with a new substring.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be modified."
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "description": "- The substring to be replaced."
+      },
+      {
+        "name": "replacement",
+        "type": "string",
+        "description": "- The replacement substring."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The modified string."
+    },
+    "example": "'Hi Fred' | replace('Fred', 'Barney');\n=> 'Hi Barney'\n\n'abc' | replace('b', 'd');\n=> 'adc'"
+  },
+  "snakeCase": {
+    "name": "snakeCase",
+    "description": "Convert a string to snake case (lowercase with underscores).",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The snake-cased string."
+    },
+    "example": "'Foo Bar' | snakeCase();\n=> 'foo_bar'\n\n'fooBar' | snakeCase();\n=> 'foo_bar'"
+  },
+  "split": {
+    "name": "split",
+    "description": "Split a string into an array using a specified separator.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be split."
+      },
+      {
+        "name": "separator",
+        "type": "string | RegExp",
+        "description": "- The separator to split by."
+      }
+    ],
+    "returns": {
+      "type": "string[]",
+      "description": "- The array of split strings."
+    },
+    "example": "'a-b-c' | split('-');\n=> ['a', 'b', 'c']\n\n'a b c' | split(' ');\n=> ['a', 'b', 'c']"
+  },
+  "startCase": {
+    "name": "startCase",
+    "description": "Convert a string to start case (capitalize the first letter of each word).",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The start-cased string."
+    },
+    "example": "'--foo-bar--' | startCase();\n=> 'Foo Bar'\n\n'fooBar' | startCase();\n=> 'Foo Bar'"
+  },
+  "startsWith": {
+    "name": "startsWith",
+    "description": "Check if a string starts with a given target.",
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "description": "- The string to be checked."
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "description": "- The target string."
+      },
+      {
+        "name": "position",
+        "type": "number",
+        "description": "- The position to check from."
+      }
+    ],
+    "returns": {
+      "type": "boolean",
+      "description": "- Returns true if the string starts with the target."
+    },
+    "example": "'abc' | startsWith('a');\n=> true\n\n'abc' | startsWith('b');\n=> false"
+  },
+  "toLower": {
+    "name": "toLower",
+    "description": "Convert a string to lowercase.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The string in lowercase."
+    },
+    "example": "'FRED' | toLower();\n=> 'fred'\n\n'Hello World' | toLower();\n=> 'hello world'"
+  },
+  "toUpper": {
+    "name": "toUpper",
+    "description": "Convert a string to uppercase.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The string in uppercase."
+    },
+    "example": "'fred' | toUpper();\n=> 'FRED'\n\n'hello world' | toUpper();\n=> 'HELLO WORLD'"
+  },
+  "trim": {
+    "name": "trim",
+    "description": "Trim whitespace from both ends of a string.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be trimmed."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The trimmed string."
+    },
+    "example": "'  fred  ' | trim();\n=> 'fred'\n\n'  barney  ' | trim();\n=> 'barney'"
+  },
+  "trimEnd": {
+    "name": "trimEnd",
+    "description": "Trim whitespace from the end of a string.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be trimmed."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The trimmed string."
+    },
+    "example": "'  fred  ' | trimEnd();\n=> '  fred'\n\n'  barney  ' | trimEnd();\n=> '  barney'"
+  },
+  "trimStart": {
+    "name": "trimStart",
+    "description": "Trim whitespace from the start of a string.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be trimmed."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The trimmed string."
+    },
+    "example": "'  fred  ' | trimStart();\n=> 'fred  '\n\n'  barney  ' | trimStart();\n=> 'barney  '"
+  },
+  "truncate": {
+    "name": "truncate",
+    "description": "Truncate a string if it exceeds the specified length, appending an ellipsis.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be truncated."
+      },
+      {
+        "name": "options",
+        "type": "{ length: number; omission?: string; separator?: string; }",
+        "description": "- The options for truncating."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The truncated string."
+    },
+    "example": "'Hello World' | truncate({ length: 5 });\n=> 'Hello...'\n\n'Hello World' | truncate({ length: 5, 'separator': ' ' });\n=> 'Hello...'\n\n'Hello World' | truncate({ length: 5, 'omission': '[...]' });\n=> 'Hello[...]'"
+  },
+  "upperCase": {
+    "name": "upperCase",
+    "description": "Convert a string to uppercase and remove spaces between words.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The uppercase string without spaces."
+    },
+    "example": "'--foo-bar--' | upperCase();\n=> 'FOOBAR'\n\n'fooBar' | upperCase();\n=> 'FOOBAR'\n\n'__FOO_BAR__' | upperCase();\n=> 'FOOBAR'"
+  },
+  "upperFirst": {
+    "name": "upperFirst",
+    "description": "Convert the first character of a string to uppercase.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be converted."
+      }
+    ],
+    "returns": {
+      "type": "string",
+      "description": "- The string with the first character in uppercase."
+    },
+    "example": "'fred' | upperFirst();\n=> 'Fred'\n\n'FRED' | upperFirst();\n=> 'FRED'"
+  },
+  "words": {
+    "name": "words",
+    "description": "Split a string into an array of words.",
+    "params": [
+      {
+        "name": "string",
+        "type": "string",
+        "description": "- The string to be split."
+      },
+      {
+        "name": "pattern",
+        "type": "RegExp",
+        "description": "- The pattern used to split the string."
+      }
+    ],
+    "returns": {
+      "type": "string[]",
+      "description": "- An array of words."
+    },
+    "example": "'fred, barney, & pebbles' | words();\n=> ['fred', 'barney', '&', 'pebbles']\n\n'fred, barney, & pebbles' | words(/[^, ]+/g);\n=> ['fred', 'barney', '&', 'pebbles']"
+  }
+}

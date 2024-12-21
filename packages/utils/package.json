@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "name": "@topo/utils",
+  "main": "dist/topo-utils.umd.js",
+  "module": "dist/topo-utils.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/topo-utils.mjs",
+      "require": "./dist/topo-utils.umd.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run build:type && vite build",
+    "build:type": "npm run clear:type && tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
+    "clear:type": "rimraf ./types"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "@topo/schema": "workspace:^",
+    "@types/crypto-js": "^4.1.1",
+    "axios": "^0.25.0",
+    "crypto-js": "^4.1.1",
+    "dayjs": "^1.11.4"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.186",
+    "@types/node": "^18.0.0",
+    "lodash": "^4.17.21",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.0.4"
+  }
+}

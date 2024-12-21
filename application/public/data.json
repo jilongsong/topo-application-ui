@@ -1,0 +1,36 @@
+[
+  {
+    "id": "posts",
+    "name": "文章列表",
+    "type": "restApi",
+    "url": "https://jsonplaceholder.typicode.com/posts",
+    "method": "GET"
+  },
+  {
+    "id": "comments",
+    "name": "评论列表",
+    "type": "restApi",
+    "url": "https://jsonplaceholder.typicode.com/comments",
+    "method": "GET"
+  },
+  {
+    "id": "todos",
+    "name": "待办事项",
+    "type": "restApi",
+    "url": "https://jsonplaceholder.typicode.com/todos",
+    "method": "GET"
+  },
+  {
+    "id": "albums",
+    "name": "相册列表",
+    "type": "restApi",
+    "url": "https://jsonplaceholder.typicode.com/albums",
+    "method": "GET"
+  },
+  {
+    "id": "photos",
+    "name": "相册图片",
+    "type": "restApi",
+    "url": "https://jsonplaceholder.typicode.com/photos"
+  }
+]

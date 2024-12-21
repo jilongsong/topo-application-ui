@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "name": "@topo/schema",
+  "sideEffects": false,
+  "main": "dist/topo-schema.umd.js",
+  "module": "dist/topo-schema.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/topo-schema.mjs",
+      "require": "./dist/topo-schema.umd.js"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": "npm run build:type && vite build",
+    "build:type": "npm run clear:type && tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
+    "clear:type": "rimraf ./types"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.0.4"
+  },
+  "dependencies": {
+    "vue": "^3.5.12"
+  }
+}
