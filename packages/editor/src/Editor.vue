@@ -1,13 +1,13 @@
 <template>
   <div class="w-full h-full flex">
     <!-- 侧边栏 -->
-    <aside v-if="layout & EditorLayout.Sidebar" class="w-72 border-r p-4" aria-label="编辑器侧边栏">侧边栏</aside>
+    <aside v-if="layout & EditorLayout.Sidebar" class="w-72 border-r p-4" aria-label="编辑器侧边栏"><Sidebar /></aside>
 
     <!-- 编辑区域 -->
     <main class="flex-1"><WorkSpace /></main>
     <!-- 右侧属性面板 -->
     <aside v-if="layout & EditorLayout.Properties" class="w-72 border-l p-4" aria-label="右侧属性面板">
-      右侧属性面板
+      <Properties />
     </aside>
   </div>
 </template>
@@ -21,6 +21,8 @@ import { MElement, MProject } from '@topo/schema';
 import { CommandKey, ContextKey, EditorEmitsKey, ElementModelsKey, ModelMethodsKey } from './constants/inject-keys';
 import useEngine from './hooks/useEngine';
 import useHotKey from './hooks/useHotKey';
+import Properties from './layout/Properties.vue';
+import Sidebar from './layout/Sidebar.vue';
 import WorkSpace from './layout/WorkSpace.vue';
 import { injectStrictWithSelf } from './utils/vue-aide';
 import {
