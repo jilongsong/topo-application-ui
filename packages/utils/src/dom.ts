@@ -109,8 +109,40 @@ export const createDiv = ({ className, cssText }: { className: string; cssText: 
   return el;
 };
 
+export const style2Obj = (style: string) => {
+  return style.split(';').reduce((styleObj, attr) => {
+    if (attr.split(':').length !== 2) {
+      return styleObj;
+    }
+    const key = attr.split(':')[0].trim();
+    const value = attr.split(':')[1].trim();
+    styleObj[key] = value;
+    return styleObj;
+  }, {} as any);
+};
+
 export const styleObj2Str = (styleObj: Record<string, any>) => {
   return Object.entries(styleObj).reduce((str, [key, value]) => {
     return `${str};${key}:${value}`;
   }, '');
+};
+
+export const parseXML = (xml: string, type: DOMParserSupportedType): HTMLElement => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xml, type);
+
+  if (doc.firstChild?.firstChild?.nodeName === 'parsererror') {
+    throw new Error(`${xml} is not XML document`);
+  }
+
+  return doc.documentElement;
+};
+
+export const isSVG = (svg: string): boolean => {
+  try {
+    const doc = parseXML(svg, 'image/svg+xml');
+    return doc.nodeName === 'svg';
+  } catch (_error) {
+    return false;
+  }
 };

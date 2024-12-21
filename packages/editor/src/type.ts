@@ -1,304 +1,231 @@
-import type { Component } from 'vue';
+import { Ref } from 'vue';
 
-import type { PanelConfig } from '@topo/panel';
-import type { Id, MApp, MContainer, MNode, MPage } from '@topo/schema';
-import StageCore, { ContainerHighlightType, MoveableOptions } from '@topo/stage';
+import { App, Cmd, EditorService, Vertex } from '@topo/engine';
+import { MElement, MVertex } from '@topo/schema';
 
-import type { ComponentListService } from './services/componentList';
-import type { EditorService } from './services/editor';
-import type { HistoryService } from './services/history';
-import type { PropsService } from './services/props';
-import type { StorageService } from './services/storage';
-import type { UiService } from './services/ui';
+type FormConfig = Record<string, any>;
 
-export interface NodePanelConfig {
-  property: PanelConfig;
-  style: PanelConfig;
-  event: PanelConfig;
+export const enum EditorLayout {
+  Sidebar = 1 << 0,
+  Workspace = 1 << 1,
+  Properties = 1 << 2,
+  TopBar = 1 << 3,
+  ContextMenu = 1 << 4,
 }
 
-export type PropsConfig = (type: string, services: Services) => NodePanelConfig | Promise<NodePanelConfig>;
-
-export type PropsValue = (type: string) => Record<string, any> | Promise<Record<string, any>>;
-
-export interface InstallOptions {
-  [key: string]: any;
+export interface Context {
+  app: App;
+  layout: Ref<EditorLayout>;
+  selected: Ref<MElement[]>;
+  selectedElement: Ref<MElement | undefined>;
 }
 
 export interface Services {
   editorService: EditorService;
-  historyService: HistoryService;
-  storageService: StorageService;
-  propsService: PropsService;
-  componentListService: ComponentListService;
-  uiService: UiService;
 }
 
-export interface StageOptions {
-  runtimeUrl: string;
-  autoScrollIntoView: boolean;
-  containerHighlightClassName: string;
-  containerHighlightDuration: number;
-  containerHighlightType: ContainerHighlightType;
-  moveableOptions: MoveableOptions | ((core?: StageCore) => MoveableOptions);
-  canSelect: (el: HTMLElement) => boolean | Promise<boolean>;
-  isContainer: (el: HTMLElement) => boolean | Promise<boolean>;
+export interface Command {
+  updateVertex: (payload: Cmd.UpdateVertex) => void;
+  updateLink: (payload: Cmd.UpdateLink) => void;
+  addElement: (payload: Cmd.AddElement) => void;
+  deleteElement: (payload: Cmd.DelElement) => void;
+  updateCanvas: (payload: Cmd.UpdateCanvas) => void;
 }
 
-export interface StoreState {
-  root: MApp | null;
-  page: MPage | null;
-  parent: MContainer | null;
-  node: MNode | null;
-  highlightNode: MNode | null;
-  nodes: MNode[];
-  stage: StageCore | null;
-  modifiedNodeIds: Map<Id, Id>;
-  pageLength: number;
+export interface ElementModel {
+  group: string;
+  vertexes: MVertex[];
 }
 
-export interface ComponentGroupState {
-  cur?: ComponentItem;
-  list: ComponentGroup[];
+export interface CustomNode {
+  group: string;
+  vertex: MVertex;
 }
 
-export enum ColumnLayout {
-  LEFT = 'left',
-  CENTER = 'center',
-  RIGHT = 'right',
+export interface InstanceTree {
+  dataCode: string;
+  insCode: string;
+  insId: string;
+  insName: string;
+  nodeType: string;
+  parentDataCode: string;
+  show?: boolean;
+  light?: boolean;
+  children: InstanceTree[] | null;
+}
+export interface InstanceListItem {
+  insId: string;
+  insName: string;
+  dataCode: string;
+  nodeType: string;
 }
 
-export interface SetColumnWidth {
-  [ColumnLayout.LEFT]?: number;
-  [ColumnLayout.CENTER]?: number | 'auto';
-  [ColumnLayout.RIGHT]?: number;
+export type InstanceList = InstanceListItem[];
+
+export interface EquipmentAndPipe {
+  selected: false;
+  insId: string;
+  insName: string;
+  insCode: string;
+  nodeType: string;
+  dataCode: string;
+  parentDataCode: null;
+  children: null;
 }
 
-export interface GetColumnWidth {
-  [ColumnLayout.LEFT]: number;
-  [ColumnLayout.CENTER]: number;
-  [ColumnLayout.RIGHT]: number;
+export interface DefineProperties {
+  //数字化编码
+  dataCode: string;
+  //实例名称
+  insName: string;
+  //实例编码
+  insCode: string;
+  //实例id
+  insId: number;
+  //节点类型
+  nodeType: string;
 }
 
-export interface StageRect {
-  width: number;
-  height: number;
+export interface NormalProperties {
+  id: number;
+  //属性取值
+  propVal: string;
+  //下拉列表
+  propValSelect: any[];
+  //模型dataCOde
+  modelDataCode: string;
+  //模型id
+  modelId: number;
+  //实例dataCode
+  insDataCode: string;
+  //实例id
+  insId: number;
+  //属性数字化编码
+  dataCode: string;
+  //属性编码
+  propCode: string;
+  //序号
+  serial: number;
+  //属性名称
+  propName: string;
+  //数据类型
+  dataType: string;
+  //二值分类
+  tfGroup: string;
+  //二值类型
+  tfType: string;
+  //菜单分类
+  menuGroup: string;
+  //菜单类型
+  menuType: string;
+  //单选标记（1单选 0多选）
+  singleFlag: number;
+  //数值类型
+  numType: string;
+  //其他类型
+  otherType: string;
+  //精度
+  p: number;
+  //属性类型
+  propType: string;
+  //转换比率
+  ratio: number;
+  //字符长度
+  maxLen: number;
+  //结构化数据定义
+  structDef: string;
+  //公式
+  formula: string;
+  //单位
+  unit: string;
+  //约束类型
+  consType: string;
+  //最大值
+  maxVal: number;
+  //最小值
+  minVal: number;
+  //取值列表
+  valArr: string;
+  //必选/可选
+  mo: string;
+  //读/写/读写
+  rw?: string;
+  //英文全称
+  allName: string;
+  //中文描述
+  zhDesc: string;
 }
 
-export enum PageSign {
-  SOURCE_CODE = 'source-code',
-  DATABASE = 'database',
-  EXECUTOR = 'executor',
-  COMPONENTS = 'components',
-  DEFAULT = 'default',
+export interface TnodeIns {
+  id: number;
+  //端点模型id
+  modelId: string;
+  //端点所属实例id
+  insId: number;
+  //节点类型(system系统 station站点 unit单元 eq设备 pipe管路)
+  nodeType: string;
+  //端点编码
+  tnodeCode: string;
+  //端点名称
+  tnodeName: string;
+  //汇聚点id
+  cnodeId: number;
+  //能源类型
+  energyType: string;
+  //端点类型
+  tnodeIo: string;
+  //连接判断
+  needCon: number;
+  //描述
+  descr: string;
 }
 
-export type ActivityPage = PageSign;
-
-export interface UiState {
-  /** 当前点击画布是否触发选中，true: 不触发，false: 触发，默认为false */
-  uiSelectMode: boolean;
-  /** 当前活动页面 */
-  currentPage: ActivityPage;
-  /** 是否显示整个配置源码， true: 显示， false: 不显示，默认为false */
-  showSrc: boolean;
-  /** 画布显示放大倍数，默认为 1 */
-  zoom: number;
-  /** 画布容器的宽高 */
-  stageContainerRect: StageRect;
-  /** 画布顶层div的宽高，可用于改变画布的大小 */
-  stageRect: StageRect;
-  /** 编辑器列布局每一列的宽度，分为左中右三列 */
-  columnWidth: GetColumnWidth;
-  /** 是否显示画布参考线，true: 显示，false: 不显示，默认为true */
-  showGuides: boolean;
-  /** 是否显示标尺，true: 显示，false: 不显示，默认为true */
-  showRule: boolean;
-  /** 用于控制该属性配置表单内组件的尺寸 */
-  propsPanelSize: 'large' | 'default' | 'small';
-  /** 是否显示新增页面按钮 */
-  showAddPageButton: boolean;
+export interface InstanceInfo {
+  baseProperties: NormalProperties[];
+  staticProperties: NormalProperties[];
+  dynamicProperties: NormalProperties[];
+  definitionProperty: DefineProperties;
+  tnodeInsVOS: TnodeIns[];
 }
 
-export interface EditorNodeInfo {
-  node?: MNode;
-  parent?: MContainer;
-  page?: MPage;
-}
+export type GetInstances = (payload: { modelDataCode: string; app: App }) => Promise<InstanceList> | InstanceList;
 
-export interface AddMNode {
-  type: string;
-  name?: string;
-  inputEvent?: DragEvent;
-  [key: string]: any;
-}
+export type GetInstanceTree = (payload: { app: App }) => Promise<InstanceTree[]> | InstanceTree[];
 
-export interface PastePosition {
-  left?: number;
-  top?: number;
-  /**
-   * 粘贴位置X方向偏移量
-   */
-  offsetX?: number;
-  /**
-   * 粘贴位置Y方向偏移量
-   */
-  offsetY?: number;
-}
+export type GetElementModels = () => Promise<ElementModel[]> | ElementModel[];
 
-/**
- * 菜单按钮
- */
-export interface MenuButton {
-  /**
-   * 按钮类型
-   * button: 只有文字不带边框的按钮
-   * text: 纯文本
-   * dropdown: 下拉菜单
-   * divider: 分隔线
-   * zoom: 放大缩小
-   */
-  type: 'button' | 'dropdown' | 'text' | 'divider' | 'zoom';
-  /** 当type为divider时有效，分割线方向, 默认vertical */
-  direction?: 'horizontal' | 'vertical';
-  /** 展示的文案 */
-  text?: string;
-  /** 鼠标悬浮是显示的气泡中的文案 */
-  tooltip?: string;
-  icon?: string | Component<{}, {}, any>;
-  /** 是否置灰，默认为false */
-  disabled?: boolean | ((data?: Services) => boolean);
-  /** 是否显示，默认为true */
-  display?: boolean | ((data?: Services) => boolean);
-  /** type为button/dropdown时点击运行的方法 */
-  handler?: (data: Services, event: MouseEvent, ...args: any) => any;
-  /** type为dropdown时，下拉的菜单列表， 或者有子菜单时 */
-  className?: string;
-  items?: MenuButton[];
-}
+export type GetInstanceInfo = (payload: {
+  dataCode: string;
+  tag: string;
+  app: App;
+}) => Promise<InstanceInfo | void> | InstanceInfo | void;
 
-export interface MenuComponent {
-  type: 'component';
-  /** Vue3组件 */
-  component: any;
-  /** 传入组件的props对象 */
-  props?: Record<string, any>;
-  /** 组件监听的事件对象，如：{ click: () => { console.log('click'); } } */
-  listeners?: Record<string, Function>;
-  slots?: Record<string, any>;
-  /** 是否显示，默认为true */
-  className?: string;
-  display?: boolean | ((data?: Services) => Promise<boolean> | boolean);
-}
+export type GetAllEquipmentAndPipe = (payload: {
+  dataCode: string;
+  hasEq: boolean;
+  hasPipe: boolean;
+  app: App;
+}) => Promise<EquipmentAndPipe[]> | EquipmentAndPipe[];
 
-/**
- * '/': 分隔符
- * 'delete': 删除按钮
- * 'undo': 撤销按钮
- * 'redo': 恢复按钮
- * 'zoom-in': 放大按钮
- * 'zoom-out': 缩小按钮
- */
-export type MenuItem =
-  | '/'
-  | 'delete'
-  | 'undo'
-  | 'redo'
-  | 'zoom'
-  | 'zoom-in'
-  | 'zoom-out'
-  | 'guides'
-  | 'rule'
-  | MenuButton
-  | MenuComponent
-  | string;
+export type CreatePipeLine = (payload: {
+  dataCode: string;
+  descr: string;
+  modelDataCode: string;
+  pipeCode: string;
+  pipeName: string;
+  app: App;
+}) => Promise<string> | string;
 
-/** 工具栏 */
-export interface MenuBarData {
-  /** 顶部工具栏左边项 */
-  [ColumnLayout.LEFT]?: MenuItem[];
-  /** 顶部工具栏中间项 */
-  [ColumnLayout.CENTER]?: MenuItem[];
-  /** 顶部工具栏右边项 */
-  [ColumnLayout.RIGHT]?: MenuItem[];
-}
+export type VertexProperties = (payload: {
+  vertex: Vertex;
+  instanceInfo: InstanceInfo;
+  app: App;
+}) => Promise<FormConfig> | FormConfig;
 
-export interface SideComponent extends MenuComponent {
-  /** 显示文案 */
-  text: string;
-  icon?: Component<{}, {}, any>;
-}
-
-/**
- * component-list: 组件列表
- * layer: 已选组件树
- */
-export type SideItem = 'component-list' | 'layer' | 'executor-list' | SideComponent;
-
-/** 工具栏 */
-export interface SideBarData {
-  /** 容器类型 */
-  type: 'tabs';
-  /** 默认激活的内容 */
-  status: string;
-  /** panel列表 */
-  items: SideItem[];
-}
-
-export interface ComponentItem {
-  /** 显示文案 */
-  text: string;
-  /** 组件类型 */
-  type: string;
-  icon?: string | Component;
-  saveId?: string | number;
-  size?: {
-    width: number;
-    height: number;
-  };
-  componentType?: string | number;
-  data?: {
-    [key: string]: any;
-  };
-}
-
-export interface ComponentGroup {
-  /** 显示文案 */
-  title: string;
-  type: string;
-  [key: string]: any;
-  /** 组内列表 */
-  items: ComponentItem[];
-}
-
-export interface UpdateData {
-  id: Id;
-  [key: string]: any;
-}
-
-export enum LayerOffset {
-  TOP = 'top',
-  BOTTOM = 'bottom',
-}
-
-/** 容器布局 */
-export enum Layout {
-  FLEX = 'flex',
-  FIXED = 'fixed',
-  RELATIVE = 'relative',
-  ABSOLUTE = 'absolute',
-}
-
-export enum Keys {
-  ESCAPE = 'Space',
-}
-
-export const H_GUIDE_LINE_STORAGE_KEY = '$topoStageHorizontalGuidelinesData';
-export const V_GUIDE_LINE_STORAGE_KEY = '$topoStageVerticalGuidelinesData';
-
-export interface ScrollViewerEvent {
-  scrollLeft: number;
-  scrollTop: number;
-  scrollHeight: number;
-  scrollWidth: number;
-}
+export type LineProperties = (payload: {
+  source: Vertex;
+  sourceFillConfig: InstanceInfo;
+  target: Vertex;
+  targetFillConfig: InstanceInfo;
+  app: App;
+}) => Promise<FormConfig> | FormConfig;

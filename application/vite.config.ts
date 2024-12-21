@@ -8,8 +8,6 @@ import vue from '@vitejs/plugin-vue';
 import autoprefixer from 'autoprefixer';
 import tailwindcss from 'tailwindcss';
 
-import { exposes } from './src/components';
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -31,7 +29,6 @@ export default defineConfig({
     federation({
       name: 'remote-ui',
       filename: 'remoteEntry.js',
-      exposes,
       shared: ['vue', 'element-plus'],
     }),
   ],

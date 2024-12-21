@@ -1,223 +1,142 @@
 <template>
-  <framework :code-options="codeOptions">
-    <template #sidebar>
-      <slot name="sidebar" :editor-service="editorService">
-        <Materials />
-      </slot>
-    </template>
-    <template #workspace>
-      <slot name="workspace" :editor-service="editorService">
-        <workspace>
-          <template #stage><slot name="stage"></slot></template>
-          <template #workspace-content><slot name="workspace-content" :editor-service="editorService"></slot></template>
-        </workspace>
-      </slot>
-    </template>
+  <div class="w-full h-full flex">
+    <!-- 侧边栏 -->
+    <aside v-if="layout & EditorLayout.Sidebar" class="w-72 border-r p-4" aria-label="编辑器侧边栏">侧边栏</aside>
 
-    <template #props-panel>
-      <slot name="props-panel">
-        <props-panel @mounted="() => $emit('props-panel-mounted')"></props-panel>
-      </slot>
-    </template>
-
-    <template #empty><slot name="empty" :editor-service="editorService"></slot></template>
-  </framework>
+    <!-- 编辑区域 -->
+    <main class="flex-1"><WorkSpace /></main>
+    <!-- 右侧属性面板 -->
+    <aside v-if="layout & EditorLayout.Properties" class="w-72 border-l p-4" aria-label="右侧属性面板">
+      右侧属性面板
+    </aside>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, provide, reactive, toRaw, watch } from 'vue';
+import { onMounted, onUnmounted, provide, Ref, ref } from 'vue';
 
-import type { MApp, MExecutorConfig, MNode } from '@topo/schema';
-import type StageCore from '@topo/stage';
-import { CONTAINER_HIGHLIGHT_CLASS, ContainerHighlightType, MoveableOptions } from '@topo/stage';
+import { App, EditorAbility, Vertex } from '@topo/engine';
+import { MElement, MProject } from '@topo/schema';
 
-import Framework from './layouts/Framework.vue';
-import Materials from './layouts/materials-panel/index.vue';
-import PropsPanel from './layouts/PropsPanel.vue';
-import Workspace from './layouts/workspace/Workspace.vue';
-import componentListService from './services/componentList';
-import editorService from './services/editor';
-import historyService from './services/history';
-import propsService, { defaultNodePanelConfig } from './services/props';
-import storageService from './services/storage';
-import uiService from './services/ui';
+import { CommandKey, ContextKey, EditorEmitsKey, ElementModelsKey, ModelMethodsKey } from './constants/inject-keys';
+import useEngine from './hooks/useEngine';
+import useHotKey from './hooks/useHotKey';
+import WorkSpace from './layout/WorkSpace.vue';
+import { injectStrictWithSelf } from './utils/vue-aide';
 import {
-  ComponentListMenuKey,
-  ContentMenuKey,
-  LayerContentMenuKey,
-  ServicesKey,
-  StageContentMenuKey,
-  StageOptionsKey,
-  StageRuntimeReadyKey,
-} from './utils/inject-keys';
-import type {
-  ComponentGroup,
-  MenuBarData,
-  MenuButton,
-  MenuComponent,
-  PropsConfig,
-  PropsValue,
-  Services,
-  SideBarData,
-  StageOptions,
+  CreatePipeLine,
+  EditorLayout,
+  ElementModel,
+  GetAllEquipmentAndPipe,
+  GetElementModels,
+  GetInstanceInfo,
+  GetInstances,
+  GetInstanceTree,
+  LineProperties,
+  VertexProperties,
 } from './type';
 
 const props = withDefaults(
   defineProps<{
-    modelValue: MApp | undefined;
-    componentGroupList?: ComponentGroup[];
-    sidebar?: SideBarData;
-    layerContentMenu?: (MenuButton | MenuComponent)[];
-    stageContentMenu?: (MenuButton | MenuComponent)[];
-    componentListMenu?: (MenuButton | MenuComponent)[];
-    menu?: MenuBarData;
-    contentMenu?: any;
-    runtimeUrl?: string;
-    autoScrollIntoView?: boolean;
-    executors?: MExecutorConfig[];
-    propsConfig?: PropsConfig;
-    propsValue?: PropsValue;
-    moveableOptions?: MoveableOptions | ((core?: StageCore) => MoveableOptions);
-    defaultSelected?: number | string;
-    canSelect?: (el: HTMLElement) => boolean | Promise<boolean>;
-    isContainer?: (el: HTMLElement) => boolean | Promise<boolean>;
-    containerHighlightClassName?: string;
-    containerHighlightDuration?: number;
-    containerHighlightType?: ContainerHighlightType;
-    stageRect?:
-      | string
-      | {
-          width: number;
-          height: number;
-        };
-    codeOptions?: Record<string | number | symbol, any>;
-    uploadPreviewFile?: string;
-    isSSOLogin?: boolean;
+    project?: MProject;
+    elementModels?: ElementModel[];
+    editorLayout?: EditorLayout;
+    // vertexProperties?: VertexProperties;
+    // lineProperties?: LineProperties;
+    getInstances?: GetInstances;
+    getInstanceTree?: GetInstanceTree;
+    getElementModels?: GetElementModels;
+    getInstanceInfo?: GetInstanceInfo;
+    getAllEquipmentAndPipe?: GetAllEquipmentAndPipe;
+    createPipeLine?: CreatePipeLine;
+    ability?: EditorAbility;
   }>(),
   {
-    componentGroupList: () => [],
-    layerContentMenu: () => [],
-    stageContentMenu: () => [],
-    componentListMenu: () => [],
-    menu: () => ({ left: [], right: [] }),
-    executors: () => [],
-    propsConfig: () => defaultNodePanelConfig,
-    propsValue: () => ({}),
-    canSelect: (el: HTMLElement) => Boolean(el.id),
-    isContainer: (el: HTMLElement) => el.classList?.contains('topo-ui-container'),
-    containerHighlightClassName: () => CONTAINER_HIGHLIGHT_CLASS,
-    containerHighlightDuration: () => 800,
-    containerHighlightType: () => ContainerHighlightType.DEFAULT,
-    codeOptions: () => ({}),
-    uploadPreviewFile: () => '',
-    isSSOLogin: () => false,
+    project: () => ({
+      id: '',
+      name: '',
+      gridType: 'mesh',
+      gridSize: 25,
+      gridColor: 'rgba(123, 123, 123, 0.49)',
+      vertexes: [],
+      links: [],
+    }),
+    elementModels: () => [],
+    editorLayout: () =>
+      EditorLayout.Properties |
+      EditorLayout.Sidebar |
+      EditorLayout.Workspace |
+      EditorLayout.TopBar |
+      EditorLayout.ContextMenu,
+    // vertexProperties: vertexProperties,
+    // lineProperties: lineProperties,
+    getInstances: () => [],
+    getInstanceTree: () => [],
+    getElementModels: () => [],
+    getInstanceInfo: () => {},
+    getAllEquipmentAndPipe: () => [],
+    createPipeLine: () => '',
   }
 );
 
-const emit = defineEmits<{
-  (event: 'props-panel-mounted'): void;
-  (event: 'update:modelValue', value: any): void;
-  (event: 'saveComponent', value: any): void;
-  (event: 'stage-runtime-ready', value: HTMLIFrameElement): void;
+const emits = defineEmits<{
+  (event: 'removeVertex', vertex: Vertex): void;
+  (event: 'addVertex', vertex: Vertex): void;
+  (event: 'publish', app: App): void;
+  (event: 'save', app: App): void;
+  (event: 'distributeCheck', app: App, data: any): void;
+  (event: 'selectChanged', vertexes: Ref<MElement[]>): void;
+  (event: 'graphScale', scale: number): void;
+  (event: 'created'): void;
 }>();
 
-const onStageRuntimeReady = (el: HTMLIFrameElement) => {
-  emit('stage-runtime-ready', el);
-};
+useEngine(props.ability);
 
-editorService.on('saveComponent', (value) => {
-  emit('saveComponent', value);
-});
+const { app, selected, layout } = injectStrictWithSelf(ContextKey);
 
-editorService.on('root-change', (value) => {
-  const node = editorService.get<MNode | null>('node');
-  const nodeId = node?.id ?? props.defaultSelected;
-  if (nodeId && node !== value) {
-    editorService.select(nodeId);
-  } else {
-    editorService.set('nodes', [value]);
-  }
+const { deleteElement } = injectStrictWithSelf(CommandKey);
 
-  emit('update:modelValue', toRaw(editorService.get('root')));
-});
+const loading = ref<boolean>(false);
 
-// 初始值变化，重新设置节点信息
-watch(
-  () => ({ modelValue: props.modelValue }),
-  ({ modelValue }) => {
-    if (!modelValue) {
-      return;
+useHotKey('z', () => app.commandService.undo(), { exact: true, ctrKey: true });
+
+useHotKey('y', () => app.commandService.redo(), { exact: true, ctrKey: true });
+
+useHotKey(
+  'Delete',
+  () => {
+    if (selected.value.length) {
+      deleteElement({
+        element: selected.value,
+      });
     }
-    editorService.set('root', modelValue);
   },
-  { immediate: true }
+  { exact: true }
 );
 
-watch(
-  () => props.componentGroupList,
-  (componentGroupList) => componentListService.setList(componentGroupList),
-  { immediate: true }
-);
+provide(ElementModelsKey, props.elementModels);
+provide(ModelMethodsKey, {
+  getInstances: props.getInstances,
+  getInstanceTree: props.getInstanceTree,
+  getInstanceInfo: props.getInstanceInfo,
+  getAllEquipmentAndPipe: props.getAllEquipmentAndPipe,
+  createPipeLine: props.createPipeLine,
+  vertexProperties: {} as VertexProperties,
+  lineProperties: {} as LineProperties,
+  getElementModels: props.getElementModels,
+});
+provide(EditorEmitsKey, { emits });
 
-watch(
-  () => props.propsConfig,
-  (config) => propsService.setPropsConfig(config),
-  { immediate: true }
-);
+defineExpose({
+  app,
+  selected,
+});
 
-watch(
-  () => props.propsValue,
-  (values) => propsService.setPropsValue(values),
-  { immediate: true }
-);
-
-watch(
-  () => props.executors,
-  (executors) => propsService.setExecutors(executors),
-  { immediate: true }
-);
-
-watch(
-  () => props.stageRect,
-  (stageRect) => stageRect && uiService.set('stageRect', stageRect),
-  { immediate: true }
-);
+onMounted(async () => {
+  loading.value = true;
+});
 
 onUnmounted(() => {
-  editorService.destroy();
-  historyService.destroy();
-  propsService.destroy();
-  uiService.destroy();
-  componentListService.destroy();
-  storageService.destroy();
+  app.clearGraph();
 });
-
-const services: Services = {
-  componentListService,
-  historyService,
-  propsService,
-  editorService,
-  uiService,
-  storageService,
-};
-
-const stageOptions = reactive<StageOptions>({
-  runtimeUrl: props.runtimeUrl ?? '',
-  autoScrollIntoView: props.autoScrollIntoView,
-  moveableOptions: props.moveableOptions ?? {},
-  canSelect: props.canSelect,
-  isContainer: props.isContainer,
-  containerHighlightClassName: props.containerHighlightClassName,
-  containerHighlightDuration: props.containerHighlightDuration,
-  containerHighlightType: props.containerHighlightType,
-});
-
-provide(ServicesKey, services);
-provide(StageOptionsKey, stageOptions);
-provide(LayerContentMenuKey, props.layerContentMenu);
-provide(StageContentMenuKey, props.stageContentMenu);
-provide(ComponentListMenuKey, props.componentListMenu);
-provide(ContentMenuKey, props.contentMenu);
-provide(StageRuntimeReadyKey, onStageRuntimeReady);
-defineExpose(services);
 </script>

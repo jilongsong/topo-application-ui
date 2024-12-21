@@ -34,3 +34,17 @@ export const setByPath = (object: object, path: string | symbol | number, value?
 export const hasByPath = (object: object, path: string | symbol | number): boolean => {
   return has(object, path);
 };
+
+export const isError = (error: any): boolean => {
+  return error instanceof Error;
+};
+export const isSubclass = (subClass: any, parentClass: any) => {
+  let currentClass = subClass;
+  while (currentClass) {
+    if (currentClass === parentClass) {
+      return true;
+    }
+    currentClass = Object.getPrototypeOf(currentClass);
+  }
+  return false;
+};
