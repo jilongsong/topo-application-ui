@@ -32,7 +32,7 @@
     "@topo/utils": "workspace:^",
     "acorn": "^8.14.0",
     "acorn-walk": "^8.3.4",
-    "dayjs": "^1.11.4",
+    "dayjs": "^1.11.13",
     "dot": "2.0.0-beta.1",
     "esprima": "^4.0.1",
     "events": "^3.3.0",
@@ -42,23 +42,23 @@
     "jsonpath": "^1.1.1",
     "jsonpath-plus": "^10.2.0",
     "lodash-es": "^4.17.21",
-    "mathjs": "^14.0.0",
-    "monaco-editor": "^0.34.0",
+    "mathjs": "^14.0.1",
+    "monaco-editor": "^0.34.1",
     "numeral": "^2.0.6",
     "ts-morph": "^24.0.0",
-    "vue": "^3.5.12"
+    "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@types/esprima": "^4.0.5",
+    "@types/esprima": "^4.0.6",
     "@types/estree": "^1.0.6",
-    "@types/events": "^3.0.0",
+    "@types/events": "^3.0.3",
     "@types/jexl": "^2.3.4",
     "@types/jsonpath": "^0.2.4",
-    "@types/lodash-es": "^4.17.4",
-    "@types/node": "^18.0.0",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^18.19.68",
     "@types/numeral": "^2.0.5",
     "rimraf": "^3.0.2",
-    "typescript": "^5.6.2",
-    "vite": "^5.0.4"
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
   }
 }

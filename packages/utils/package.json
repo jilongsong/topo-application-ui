@@ -20,17 +20,18 @@
   },
   "dependencies": {
     "@topo/schema": "workspace:^",
-    "@types/crypto-js": "^4.1.1",
+    "@types/crypto-js": "^4.2.2",
     "axios": "^0.25.0",
-    "crypto-js": "^4.1.1",
-    "dayjs": "^1.11.4"
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
+    "events": "^3.3.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.186",
-    "@types/node": "^18.0.0",
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^18.19.68",
     "lodash": "^4.17.21",
     "rimraf": "^3.0.2",
-    "typescript": "^5.6.2",
-    "vite": "^5.0.4"
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
   }
 }

@@ -15,8 +15,7 @@ export default defineConfig({
         : [
             { find: /^@topo\/schema/, replacement: path.join(__dirname, '../schema/src/index.ts') },
             { find: /^@topo\/utils/, replacement: path.join(__dirname, '../utils/src/index.ts') },
-            { find: /^@topo\/core/, replacement: path.join(__dirname, '../core/src/index.ts') },
-            { find: /^@topo\/stage/, replacement: path.join(__dirname, '../stage/src/index.ts') },
+            { find: /^@topo\/engine/, replacement: path.join(__dirname, '../engine/src/index.ts') },
             { find: /^@topo\/panel/, replacement: path.join(__dirname, '../panel/src/index.ts') },
           ],
   },
