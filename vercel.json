@@ -1,5 +1,5 @@
 {
-    "buildCommand": "npm --filter \"application\" build",
+    "buildCommand": "pnpm --filter \"application\" build",
     "outputDirectory": "application/dist",
     "framework": "vite",
     "rewrites": [

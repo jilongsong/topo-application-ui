@@ -28,7 +28,6 @@
   "workspaces": [
     "packages/engine",
     "packages/editor",
-    "packages/form",
     "packages/schema",
     "packages/utils",
     "packages/ui"
