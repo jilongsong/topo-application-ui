@@ -1,24 +1,24 @@
 import { NodeType, PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
 
-import rect from '../../../assets/model/container/rect.svg';
+import change from '../../../assets/model/change.gif';
 import { CustomNode } from '../../types';
 
 const node = {
-  group: '容器',
+  group: '模型',
   vertex: {
     id: '',
-    name: '矩形',
-    tag: Tag.rect,
-    type: NodeType.Container,
+    name: '配电箱',
+    tag: Tag.image,
+    type: NodeType.Node,
     states: [
       {
         name: '运行',
-        src: rect,
+        src: change,
         default: true,
       },
     ],
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     x: 0,
     y: 0,
     angle: 0,

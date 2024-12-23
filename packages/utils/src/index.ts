@@ -1,5 +1,3 @@
-import { MVertex, Tag } from '@topo/schema';
-
 export * from './dom';
 
 export * from './request';
@@ -45,14 +43,6 @@ export const guid = (digit: number = 12): string => {
     return v.toString(16);
   });
 };
-
-export const isSystemVertex = (vertex: MVertex) => vertex.tag === Tag.System;
-
-export const isStationVertex = (vertex: MVertex) => vertex.tag === Tag.Station;
-
-export const isUnitVertex = (vertex: MVertex) => vertex.tag === Tag.Unit;
-
-export const isEquipmentVertex = (vertex: MVertex) => vertex.tag === Tag.Equipment;
 
 // 驼峰转换横线
 export const toLine = (name = '') => name.replace(/\B([A-Z])/g, '-$1').toLowerCase();
