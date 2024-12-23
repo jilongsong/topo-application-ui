@@ -1,0 +1,8 @@
+{
+    "buildCommand": "npm --filter \"application\" build",
+    "outputDirectory": "application/dist",
+    "framework": "vite",
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/index.html" }
+    ]
+  }

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full flex flex-col">
     <div class="pb-2">
       <div v-if="!selectedElement" class="font-bold">画布属性</div>
       <div v-else>
@@ -11,7 +11,9 @@
         </div>
       </div>
     </div>
-    <Panel ref="panelRef" :panel-config="panelConfig" @change="handleConfigChange" />
+    <div class="flex-1 overflow-y-scroll">
+      <Panel ref="panelRef" :panel-config="panelConfig" @change="handleConfigChange" />
+    </div>
   </div>
 </template>
 
@@ -35,7 +37,7 @@ const panelConfig = ref();
 
 const handleSelectedCanvas = (project: Project) => {
   const values = {
-    gridType: project.gridType || 'none',
+    gridType: project.gridType || 'dot',
     gridColor: project.gridColor,
     gridSize: project.gridSize,
   };
@@ -45,9 +47,17 @@ const handleSelectedCanvas = (project: Project) => {
 
 const handleSelectedVertex = async () => {
   const currentNode = selectedElement.value as Vertex;
+  console.log('handleSelectedVertex', currentNode);
   const values = {
     width: currentNode.width,
     height: currentNode.height,
+    ports: currentNode.ports.map((port) => {
+      return {
+        tnodeName: port.tnodeName,
+        tnodeCode: port.tnodeCode,
+        descr: port.descr,
+      };
+    }),
   };
   panelConfig.value = nodeConfig;
   panelRef.value?.resetForm({ values }, { force: true });

@@ -1,4 +1,4 @@
-import { MVertex } from '@gmct/schema';
+import { MVertex } from '@topo/schema';
 
 export interface ElementGroup {
   group: string;

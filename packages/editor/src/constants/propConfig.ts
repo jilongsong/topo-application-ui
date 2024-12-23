@@ -28,6 +28,29 @@ export const nodeConfig: PanelConfig = {
       type: FieldType.Number,
       label: '高度',
     },
+    ports: {
+      type: FieldType.Array,
+      label: '端口',
+      field: {
+        type: FieldType.Object,
+        hideLabel: true,
+        fields: {
+          tnodeName: {
+            type: FieldType.String,
+            label: '端口名称',
+          },
+          tnodeCode: {
+            type: FieldType.String,
+            label: '端口编码',
+          },
+          descr: {
+            type: FieldType.String,
+            label: '端口描述',
+            displayTextArea: true,
+          },
+        },
+      },
+    },
   },
 };
 
