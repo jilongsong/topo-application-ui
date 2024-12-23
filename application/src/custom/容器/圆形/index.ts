@@ -1,6 +1,6 @@
 import { NodeType, PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
 
-import status from '../../../assets/model/运行.svg';
+import circle from '../../../assets/model/container/circle.svg';
 import { CustomNode } from '../../types';
 
 const node = {
@@ -13,20 +13,8 @@ const node = {
     states: [
       {
         name: '运行',
-        src: status,
+        src: circle,
         default: true,
-      },
-      {
-        name: '停机',
-        src: status,
-      },
-      {
-        name: '检修',
-        src: status,
-      },
-      {
-        name: '故障',
-        src: status,
       },
     ],
     width: 200,

@@ -1,10 +1,10 @@
 import { NodeType, PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
 
-import status from '../../../assets/model/运行.svg';
+import shuiben from '../../../assets/model/shuiben.gif';
 import { CustomNode } from '../../types';
 
 const node = {
-  group: '连通工具',
+  group: '模型',
   vertex: {
     id: '',
     name: '母排',
@@ -13,24 +13,12 @@ const node = {
     states: [
       {
         name: '运行',
-        src: status,
+        src: shuiben,
         default: true,
       },
-      {
-        name: '停机',
-        src: status,
-      },
-      {
-        name: '检修',
-        src: status,
-      },
-      {
-        name: '故障',
-        src: status,
-      },
     ],
-    width: 200,
-    height: 2,
+    width: 60,
+    height: 60,
     x: 0,
     y: 0,
     angle: 0,
