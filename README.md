@@ -1,6 +1,6 @@
 ## 环境准备
 
-node.js >= 16
+node.js >= 18
 
 先安装 pnpm
 
@@ -19,5 +19,5 @@ $ pnpm bootstrap
 执行命令
 
 ```bash
-$ pnpm designer
+$ pnpm application:dev
 ```

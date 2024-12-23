@@ -11,10 +11,10 @@
         </CollapsibleTrigger>
         <CollapsibleContent class="space-y-2">
           <div class="grid grid-cols-2 gap-2">
-            <div v-for="item in group.vertexes" :key="item.id" class="flex flex-col gap-2 justify-center">
+            <div v-for="item in group.vertexes" :key="item.id" class="flex flex-col gap-2 items-center justify-center">
               <img
-                class="cursor-move object-contain"
-                src="http://k8s.isiact.com/edoms-designtime-service-dev/edoms/design-time/file/preview/?contentId=e7d20fd7db47.png"
+                class="w-20 h-16 cursor-move object-contain"
+                :src="getImgSrc(item)"
                 alt=""
                 draggable
                 @dragstart.stop="(event) => onDragstart(event, item)"
@@ -63,8 +63,6 @@ const filterList = computed(() => {
 });
 
 const getImgSrc = (vertex: MVertex) => vertex.states.find((s) => s.default)?.src;
-
-console.log('getImgSrc', getImgSrc);
 
 const onDragstart = (event: DragEvent, vertex: MVertex) => {
   event.dataTransfer?.setData('application/json', JSON.stringify(vertex));
