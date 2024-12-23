@@ -9,8 +9,6 @@
     "application:dev": "pnpm --filter \"application\" dev",
     "application:build": "pnpm --filter \"application\" build",
     "build": "pnpm --filter \"@topo/*\" build",
-    "runtime:build": "pnpm --filter \"runtime\" build",
-    "runtime:build:offline": "pnpm --filter \"runtime\" build:offline",
     "clean": "pnpm clean:top && pnpm clean:modules",
     "clean:top": "rimraf */**/dist */**/types */dist coverage dwt*",
     "clean:modules": "rimraf node_modules **/node_modules **/**/node_modules",
