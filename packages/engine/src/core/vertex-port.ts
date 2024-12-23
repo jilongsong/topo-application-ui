@@ -36,7 +36,7 @@ export class VertexPort implements MVertexPort {
     this.tnodeIo = tnodeIo;
     this.energyType = energyType;
     this.descr = descr;
-    this.position = typeof position === 'string' ? JSON.parse(position) : position;
+    this.position = typeof position === 'string' ? JSON.parse(position) : position || { refX: 0, refY: 0 };
   }
 
   public setLink(link: Link): void {
@@ -56,7 +56,7 @@ export class VertexPort implements MVertexPort {
       id,
       tnodeName,
       tnodeCode,
-      virtual: [Tag.Equipment, Tag.Pipe].includes(this.vertex.tag) ? 0 : 1,
+      virtual: [Tag.rect, Tag.circle].includes(this.vertex.tag) ? 0 : 1,
       needCon,
       label,
       tnodeIo,

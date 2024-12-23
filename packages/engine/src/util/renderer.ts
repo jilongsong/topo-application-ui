@@ -1,9 +1,10 @@
 import { Graph } from '@antv/x6';
 
-import { PortTnodeIo } from '@topo/schema';
+import { PortTnodeIo, Tag } from '@topo/schema';
 
 import { DEFAULT_STYLE, Vertex } from '../core';
 import { CustomEdge } from '../custom/edge';
+import { CustomGroup } from '../custom/group';
 import { CustomNode } from '../custom/node';
 
 import { guid } from './uid';
@@ -25,7 +26,7 @@ export const defaultGraphOptions = (): Graph.Options => ({
     eventTypes: ['leftMouseDown'],
   },
   background: {
-    color: '#fffffff',
+    color: '#f2f7fa',
   },
   grid: {
     visible: true,
@@ -33,6 +34,22 @@ export const defaultGraphOptions = (): Graph.Options => ({
     args: {
       color: '#a0a0a0', // 网格线/点颜色
       thickness: 2, // 网格线宽度/网点大小
+    },
+  },
+  embedding: {
+    enabled: true,
+    findParent({ node }: { node: any }) {
+      const groupTags = [Tag.circle, Tag.rect];
+      const bbox = node.getBBox();
+      return this.getNodes().filter((targetNode) => {
+        const targetBBox = targetNode.getBBox();
+        if (targetBBox && bbox.isIntersectWithRect(targetBBox) && targetNode instanceof CustomGroup) {
+          const parentTag = targetNode.vertex.tag;
+          if (groupTags.includes(parentTag)) return true;
+        } else {
+          return false;
+        }
+      });
     },
   },
   highlighting: {

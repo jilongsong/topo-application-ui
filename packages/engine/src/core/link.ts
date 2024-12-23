@@ -18,7 +18,8 @@ export class Link extends Element {
   public target: LinkPoint;
   public vertices?: Position[];
   public states: MLinkState[];
-
+  public isReverse?: boolean;
+  public isRunning?: boolean;
   public project: Project;
   public edge: CustomEdge;
 
@@ -32,6 +33,8 @@ export class Link extends Element {
     this.target = target;
     this.source.vertex.getPort(this.source.port)?.setLink(this);
     this.target.vertex.getPort(this.target.port)?.setLink(this);
+    this.isReverse = options.config.isReverse ?? false;
+    this.isRunning = options.config.isRunning ?? false;
     this.edge = new CustomEdge(this);
     this.edge.setAttrByPath(['container', 'style'], this.getStyle());
   }
@@ -78,6 +81,9 @@ export class Link extends Element {
     this.edge.setZIndex(this.zIndex ?? 1);
     this.edge.setVertices(this.vertices ?? []);
     this.edge.setAttrByPath(['container', 'style'], this.getStyle());
+    this.isRunning = config.isRunning ?? false;
+    this.isReverse = config.isReverse ?? false;
+    this.edge.refreshEdgeStyle();
     const { source, target } = this.init(config);
     this.source = source;
     this.edge.setSource(this.source.vertex.node, {
@@ -113,6 +119,8 @@ export class Link extends Element {
       source: this.source.toJSON(),
       target: this.target.toJSON(),
       vertices: this.vertices,
+      isReverse: this.isReverse,
+      isRunning: this.isRunning,
     };
   }
 }

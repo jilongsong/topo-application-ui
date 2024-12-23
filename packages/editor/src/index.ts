@@ -8,6 +8,8 @@ import './globals.css';
 
 export * from './type';
 
+export type TopoEditorInstance = typeof Editor;
+
 export default {
   install: (app: App): void => {
     const i18nSymbol = Reflect.get(app, '__VUE_I18N_SYMBOL__');

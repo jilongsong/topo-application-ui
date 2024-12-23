@@ -72,25 +72,27 @@ export interface MVertexPort {
 }
 
 export const enum Tag {
-  Project = 'project',
-  /** 系统 */
-  System = 'system',
-  /** 站 */
-  Station = 'station',
-  /** 单元 */
-  Unit = 'unit',
-  /** 管路 */
-  Pipe = 'pipe',
-  /** 设备 */
-  Equipment = 'eq',
+  circle = 'circle',
+  rect = 'rect',
+  image = 'image',
 }
 
-export type VertexTag = Tag.System | Tag.Station | Tag.Unit | Tag.Pipe | Tag.Equipment;
+export type VertexTag = Tag;
+
+export interface RuleParameter {
+  defaultValue: string;
+  elementId: string;
+  id: string;
+  name: string;
+  source: string;
+}
 
 export interface State {
   name: string;
   default?: boolean;
   rule?: string;
+  ruleExpression?: string;
+  ruleParameters?: RuleParameter[];
 }
 
 export interface Variable {
@@ -105,8 +107,18 @@ export interface MElement<T extends State = State> {
   name: string;
   /** 填充颜色 */
   fill?: string;
+  /** 节点填充颜色 */
+  nodeFill?: string;
+  /** 节点线条颜色 */
+  nodeStroke?: string;
+  /** 节点填充透明度 */
+  nodeFillOpacity?: number;
+  /** 节点线条透明度 */
+  nodeStrokeOpacity?: number;
   /** 填充透明度 */
   fillOpacity?: number;
+  /** 填充宽度 */
+  fillWidth?: number;
   /** 线条颜色 */
   stroke?: string;
   /** 线条宽度 */
@@ -121,8 +133,13 @@ export interface MElement<T extends State = State> {
   colorOpacity?: number;
   /** 字体大小 */
   fontSize?: number;
+  /** 填充颜色 */
+  fillColor?: string;
+
   /** 视图层级 */
   zIndex?: number;
+  /** 动画 */
+  animation?: string;
   /** 变量配置 */
   variables?: Variable[];
   /** 状态 */
@@ -133,15 +150,25 @@ export interface MVertexState extends State {
   src: string;
 }
 
+export enum NodeType {
+  Container = 'container',
+  Node = 'node',
+}
+
 export interface MVertex extends MElement<MVertexState>, Posture {
   /** 节点类型 */
-  type: string;
+  type: NodeType;
   /** 标签 */
   tag: VertexTag;
   /** 是否可用 */
   disabled?: boolean;
   /** 连接桩 */
   ports?: MVertexPort[];
+  /** 子节点 */
+  children?: MVertex[];
+  /** 父节点 */
+  parentId?: Id;
+  [key: string]: any;
 }
 
 export interface MLinkPoint {
@@ -164,6 +191,10 @@ export interface MLink extends MElement<MLinkState> {
   target: MLinkPoint;
   /** 顶点 */
   vertices?: Position[];
+  /** 反向 */
+  isReverse?: boolean;
+  /** 样式 */
+  isRunning?: boolean;
 }
 
 export type GridType = 'none' | 'dot' | 'fixedDot' | 'mesh' | 'doubleMesh';

@@ -38,6 +38,14 @@ export const isProject = (map: any): boolean => {
   return true;
 };
 
+export const guid = (digit: number = 12): string => {
+  return 'x'.repeat(digit).replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
 export const isSystemVertex = (vertex: MVertex) => vertex.tag === Tag.System;
 
 export const isStationVertex = (vertex: MVertex) => vertex.tag === Tag.Station;

@@ -19,11 +19,13 @@ export class App extends BaseService<ContextEventArgs> {
   public readonly project: Project;
   public selected: Element[] = [];
   public domElement: HTMLDivElement;
+  private counter: number;
   constructor() {
     super();
 
     this.domElement = document.createElement('div');
     this.domElement.setAttribute('style', 'width: 100%; height: 100%; position: relative; overflow: hidden;');
+    this.counter = 0;
     const resizeObserver = new ResizeObserver(([domElement]) => {
       this.rendererService.emit('graph:resize', {
         ...domElement.contentRect,
@@ -49,6 +51,13 @@ export class App extends BaseService<ContextEventArgs> {
     this.project.on('project:vertex:added', async (e) => {
       const { vertex } = e;
       await this.rendererService.addNode(vertex.node);
+      if (vertex.parent) {
+        vertex.parent.node.addChild(vertex.node);
+      }
+      this.counter++;
+      if (this.counter === this.project.vertexes.length) {
+        this.emit('project:vertex:created', {});
+      }
       this.emit('project:vertex:added', e);
     });
 
@@ -136,7 +145,14 @@ export class App extends BaseService<ContextEventArgs> {
   }
 
   public addVertex(config: MVertex): void {
-    this.project.addVertex(config);
+    let parent: Vertex | undefined;
+    if (config.parentId) {
+      const elem = this.project.elementMap.get(config.parentId);
+      if (elem instanceof Vertex) {
+        parent = elem as Vertex;
+      }
+    }
+    this.project.addVertex(config, parent);
   }
 
   public removeVertex(config: MVertex | Vertex | Id): void {
@@ -231,6 +247,7 @@ export class App extends BaseService<ContextEventArgs> {
     this.storageService.destroy();
     this.project.removeAllListeners();
     this.removeAllListeners();
+    this.counter = 0;
   }
 }
 

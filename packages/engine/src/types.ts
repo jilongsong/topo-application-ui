@@ -1,6 +1,6 @@
 import { Cell, Graph } from '@antv/x6';
 
-import { GridType, MElement, MLink, MProject, MVertex } from '@topo/schema';
+import { GridType, MElement, MLink, MProject, MVertex, MVertexPort } from '@topo/schema';
 
 import App from './app';
 import { Element, Link, Project, Vertex } from './core';
@@ -8,6 +8,7 @@ import { CmdNotOptionsError } from './error';
 
 export interface NodeMetadata {
   id: string;
+  insDataCode: string;
   vertex: Vertex;
   name?: string;
   width?: number;
@@ -26,7 +27,7 @@ export type PathImpl<T, K extends keyof T> = K extends string
 
 export type Path<T> = PathImpl<T, keyof T>;
 
-export const CONFIG_NAME = 'topo';
+export const CONFIG_NAME = 'gmct';
 
 export interface Config {
   width: number;
@@ -147,6 +148,7 @@ export interface ProjectEventArgs {
   };
   'project:vertex:added': {
     vertex: Vertex;
+    parent?: Vertex;
   };
   'project:vertex:created': {};
   'project:vertex:removed': {
@@ -155,6 +157,12 @@ export interface ProjectEventArgs {
   'project:vertex:updated': {
     newVertex: Vertex;
     oldVertex: Vertex;
+  };
+  'project:vertex:ports:added': {
+    ports: MVertexPort[];
+  };
+  'project:vertex:ports:updated': {
+    ports: MVertexPort[];
   };
   'project:link:added': {
     link: Link;
