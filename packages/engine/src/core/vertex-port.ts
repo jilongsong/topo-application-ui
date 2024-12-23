@@ -56,7 +56,7 @@ export class VertexPort implements MVertexPort {
       id,
       tnodeName,
       tnodeCode,
-      virtual: [Tag.Equipment, Tag.Pipe].includes(this.vertex.tag) ? 0 : 1,
+      virtual: [Tag.rect, Tag.circle].includes(this.vertex.tag) ? 0 : 1,
       needCon,
       label,
       tnodeIo,

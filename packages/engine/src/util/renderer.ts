@@ -39,22 +39,13 @@ export const defaultGraphOptions = (): Graph.Options => ({
   embedding: {
     enabled: true,
     findParent({ node }: { node: any }) {
-      const currentTag = node.vertex.tag;
-      const groupTags = [Tag.System, Tag.Station, Tag.Unit];
+      const groupTags = [Tag.circle, Tag.rect];
       const bbox = node.getBBox();
       return this.getNodes().filter((targetNode) => {
         const targetBBox = targetNode.getBBox();
         if (targetBBox && bbox.isIntersectWithRect(targetBBox) && targetNode instanceof CustomGroup) {
           const parentTag = targetNode.vertex.tag;
-          if (!groupTags.includes(currentTag)) {
-            return true;
-          }
-          if (currentTag === Tag.Unit && groupTags.slice(0, 2).includes(parentTag)) {
-            return true;
-          }
-          if (currentTag === Tag.Station && groupTags.slice(0, 1).includes(parentTag)) {
-            return true;
-          }
+          if (groupTags.includes(parentTag)) return true;
         } else {
           return false;
         }

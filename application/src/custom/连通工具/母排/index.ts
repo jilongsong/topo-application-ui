@@ -1,4 +1,4 @@
-import { PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
+import { NodeType, PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
 
 import status from '../../../assets/model/运行.svg';
 import { CustomNode } from '../../types';
@@ -8,8 +8,8 @@ const node = {
   vertex: {
     id: '',
     name: '母排',
-    tag: Tag.Pipe,
-    type: 'PGY02_S0000_ST00000_U00000_GLLDS1_MP0000',
+    tag: Tag.image,
+    type: NodeType.Node,
     states: [
       {
         name: '运行',

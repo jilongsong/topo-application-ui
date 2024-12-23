@@ -11,6 +11,10 @@ export class CustomGroup extends CustomNode {
   constructor(metadata: Vertex | NodeMetadata) {
     super(metadata);
     this.toggleCollapsed(this.vertex.isCollapsed);
+
+    const { markup, attrs } = CustomGroup.getMarkupAndAttrs(this.vertex.tag);
+    this.setMarkup(markup);
+    this.setAttrs(attrs);
   }
 
   public isCollapsed(): boolean {
@@ -32,6 +36,109 @@ export class CustomGroup extends CustomNode {
       this.setAttrByPath(['body'], { visibility: 'visible' });
     }
     this.emit('change:collapsed' as any, { cell: this });
+  }
+
+  static getMarkupAndAttrs(shape: string = 'rect') {
+    switch (shape) {
+      case 'circle':
+        return {
+          markup: [
+            {
+              tagName: 'g',
+              selector: 'circle',
+              children: [
+                {
+                  tagName: 'ellipse',
+                  selector: 'body',
+                },
+                {
+                  tagName: 'image',
+                  selector: 'image',
+                },
+                {
+                  tagName: 'text',
+                  selector: 'label',
+                },
+              ],
+            },
+          ],
+          attrs: {
+            body: {
+              stroke: 'var(--nodeStroke)',
+              strokeOpacity: 'var(--nodeOpacity)',
+              fill: '#ffffff',
+              fillOpacity: 'var(--nodeOpacity)',
+              refRx: '50%',
+              refRy: '50%',
+              refCx: '50%',
+              refCy: '50%',
+              style: {
+                pointerEvents: 'auto',
+              },
+            },
+            image: {
+              refWidth: 1,
+              refHeight: 1,
+            },
+            label: {
+              fill: 'var(--color)',
+              fillOpacity: 'var(--colorOpacity)',
+              textAnchor: 'middle',
+              fontSize: 'var(--fontSize)',
+              refX: 0.5,
+              refY: 0.999,
+            },
+          },
+        };
+      default: // 默认是矩形
+        return {
+          markup: [
+            {
+              tagName: 'g',
+              selector: 'container',
+              children: [
+                {
+                  tagName: 'rect',
+                  selector: 'body',
+                },
+                {
+                  tagName: 'image',
+                  selector: 'image',
+                },
+                {
+                  tagName: 'text',
+                  selector: 'label',
+                },
+              ],
+            },
+          ],
+          attrs: {
+            body: {
+              stroke: 'var(--nodeStroke)',
+              strokeOpacity: 'var(--nodeOpacity)',
+              fill: 'var(--nodeFill)',
+              fillOpacity: 'var(--nodeOpacity)',
+              refWidth: 1,
+              refHeight: 1,
+              style: {
+                pointerEvents: 'auto',
+              },
+            },
+            image: {
+              refWidth: 1,
+              refHeight: 1,
+            },
+            label: {
+              fill: 'var(--color)',
+              fillOpacity: 'var(--colorOpacity)',
+              textAnchor: 'middle',
+              fontSize: 'var(--fontSize)',
+              refX: 0.5,
+              refY: 0.999,
+            },
+          },
+        };
+    }
   }
 }
 

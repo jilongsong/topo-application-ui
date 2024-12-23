@@ -1,4 +1,4 @@
-import { Id, MVertex, MVertexPort, MVertexState, Tag, VertexTag } from '@topo/schema';
+import { Id, MVertex, MVertexPort, MVertexState, NodeType, VertexTag } from '@topo/schema';
 
 import { CustomGroup } from '../custom/group';
 import { CustomNode } from '../custom/node';
@@ -16,7 +16,7 @@ interface VertexOptions {
 }
 
 export class Vertex extends Element {
-  public type: string;
+  public type: NodeType;
   public tag: VertexTag;
   public ports: VertexPort[] = [];
   public disabled?: boolean;
@@ -59,7 +59,7 @@ export class Vertex extends Element {
     this.project = options.project;
     this.parent = options.parent;
 
-    if ([Tag.System, Tag.Station, Tag.Unit].includes(this.tag)) {
+    if (this.type === NodeType.Container) {
       if (Reflect.has(options.config, 'isCollapsed')) {
         this.isCollapsed = options.config.isCollapsed;
       } else {
@@ -81,6 +81,7 @@ export class Vertex extends Element {
     } else {
       this.node = new CustomNode(this);
       this.node.setAttrByPath(['container', 'style'], this.getStyle());
+      this.defaultImg();
     }
 
     this.node.setLabel(this.name);
@@ -148,12 +149,6 @@ export class Vertex extends Element {
         }
       }
     });
-    this.defaultImg();
-
-    // children?.map((child) => {
-    //   this.project.addVertex(child);
-    //   // this.addChild(child);
-    // });
   }
 
   public addChild(config: MVertex | Vertex): void {
@@ -241,7 +236,9 @@ export class Vertex extends Element {
     port.position = portConfig.position;
     this.node.setPortProp(port.id, 'args/refX', port.position?.refX);
     this.node.setPortProp(port.id, 'args/refY', port.position?.refY);
-    this.defaultImg();
+    if (this.type !== NodeType.Container) {
+      this.defaultImg();
+    }
   }
 
   public update(config: MVertex | Vertex): void {

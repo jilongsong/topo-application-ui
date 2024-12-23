@@ -7,8 +7,8 @@ const node = {
   group: '容器',
   vertex: {
     id: '',
-    name: '矩形',
-    tag: Tag.rect,
+    name: '圆形',
+    tag: Tag.circle,
     type: NodeType.Container,
     states: [
       {

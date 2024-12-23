@@ -72,20 +72,12 @@ export interface MVertexPort {
 }
 
 export const enum Tag {
-  Project = 'project',
-  /** 系统 */
-  System = 'system',
-  /** 站 */
-  Station = 'station',
-  /** 单元 */
-  Unit = 'unit',
-  /** 管路 */
-  Pipe = 'pipe',
-  /** 设备 */
-  Equipment = 'eq',
+  circle = 'circle',
+  rect = 'rect',
+  image = 'image',
 }
 
-export type VertexTag = Tag.System | Tag.Station | Tag.Unit | Tag.Pipe | Tag.Equipment;
+export type VertexTag = Tag;
 
 export interface RuleParameter {
   defaultValue: string;
@@ -158,9 +150,14 @@ export interface MVertexState extends State {
   src: string;
 }
 
+export enum NodeType {
+  Container = 'container',
+  Node = 'node',
+}
+
 export interface MVertex extends MElement<MVertexState>, Posture {
   /** 节点类型 */
-  type: string;
+  type: NodeType;
   /** 标签 */
   tag: VertexTag;
   /** 是否可用 */
