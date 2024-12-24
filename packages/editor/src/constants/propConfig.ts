@@ -1,4 +1,5 @@
 import { FieldType, PanelConfig } from '@topo/panel';
+
 export const canvasConfig: PanelConfig = {
   fields: {
     gridType: {
