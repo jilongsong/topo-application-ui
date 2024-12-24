@@ -1,24 +1,24 @@
 import { NodeType, PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
 
-import shuiben from '../../../assets/model/水泵.gif';
+import che from '../../../assets/model/整车.svg';
 import { CustomNode } from '../../types';
 
 const node = {
   group: '模型',
   vertex: {
     id: '',
-    name: '水泵',
+    name: '车',
     tag: Tag.image,
     type: NodeType.Node,
     states: [
       {
         name: '运行',
-        src: shuiben,
+        src: che,
         default: true,
       },
     ],
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 100,
     x: 0,
     y: 0,
     angle: 0,

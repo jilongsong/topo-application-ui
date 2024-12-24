@@ -1,19 +1,19 @@
 import { NodeType, PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
 
-import change from '../../../assets/model/change.gif';
+import diancifa from '../../../assets/model/电磁阀.svg';
 import { CustomNode } from '../../types';
 
 const node = {
   group: '模型',
   vertex: {
     id: '',
-    name: '配电箱',
+    name: '电磁阀',
     tag: Tag.image,
     type: NodeType.Node,
     states: [
       {
         name: '运行',
-        src: change,
+        src: diancifa,
         default: true,
       },
     ],

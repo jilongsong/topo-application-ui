@@ -1,24 +1,24 @@
 import { NodeType, PortEnergyType, PortTnodeIo, Tag } from '@topo/schema';
 
-import shuiben from '../../../assets/model/水泵.gif';
+import taiyangnengdianchiban from '../../../assets/model/太阳能电池板.gif';
 import { CustomNode } from '../../types';
 
 const node = {
   group: '模型',
   vertex: {
     id: '',
-    name: '水泵',
+    name: '太阳能电池板',
     tag: Tag.image,
     type: NodeType.Node,
     states: [
       {
         name: '运行',
-        src: shuiben,
+        src: taiyangnengdianchiban,
         default: true,
       },
     ],
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 100,
     x: 0,
     y: 0,
     angle: 0,
