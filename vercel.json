@@ -1,5 +1,5 @@
 {
-    "buildCommand": "pnpm build && pnpm --filter \"playground\" build",
+    "buildCommand": "pnpm build && pnpm --filter \"application\" build",
     "outputDirectory": "application/dist",
     "framework": "vite",
     "rewrites": [
